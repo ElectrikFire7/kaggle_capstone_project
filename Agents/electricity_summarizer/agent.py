@@ -40,7 +40,7 @@ from Agents.electricity_summarizer.tools.location import get_location_adjustment
 # ---- Load the Electricity Estimation Skill ----
 # The skill provides structured instructions for the agent to follow
 # when performing an electricity estimation (progressive disclosure: L1 → L2 → L3)
-skill_path = pathlib.Path(__file__).parent / "skills" / "electricity_estimation"
+skill_path = pathlib.Path(__file__).parent / "skills" / "electricity-estimation"
 electricity_estimation_skill = load_skill_from_dir(skill_path)
 
 # Create a SkillToolset that bundles the skill with the functional tools

@@ -40,7 +40,7 @@ from Agents.gis_agent.tools.competition import find_competition
 # ---- Load the Spatial Analysis Skill ----
 # The skill provides structured instructions for the agent to follow
 # when performing a spatial analysis (progressive disclosure: L1 → L2 → L3)
-skill_path = pathlib.Path(__file__).parent / "skills" / "spatial_analysis"
+skill_path = pathlib.Path(__file__).parent / "skills" / "spatial-analysis"
 spatial_analysis_skill = load_skill_from_dir(skill_path)
 
 # Create a SkillToolset that bundles the skill with the functional tools

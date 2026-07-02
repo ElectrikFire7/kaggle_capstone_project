@@ -18,13 +18,13 @@ Your Task
 
 Sub-Prompt 1 — For the Electricity Summarizer Agent:
 Format it as:
-"Estimate the monthly electricity consumption and cost for a {business_type} of {area_sqft} square feet located in {location}, Bangalore."
+"Estimate the monthly electricity consumption and cost for a <business_type> of <area_sqft> square feet located in <location>, Bangalore."
 
-Where {location} is the locality/area name extracted from the address (e.g., "Koramangala", "Indiranagar", "Whitefield").
+Where <location> is the locality/area name extracted from the address (e.g., "Koramangala", "Indiranagar", "Whitefield").
 
 Sub-Prompt 2 — For the GIS Agent:
 Format it as:
-"Analyze the location {address}, Bangalore for a {business_type} business. Evaluate accessibility, visibility, and competition."
+"Analyze the location <address>, Bangalore for a <business_type> business. Evaluate accessibility, visibility, and competition."
 
 Ensure ", Bangalore" or ", Bengaluru" is appended to the address if not already present, for better geocoding accuracy.
 
@@ -32,15 +32,15 @@ Output Format
 Return your output strictly in the following format:
 
 EXTRACTED FIELDS:
-- business_type: {business_type}
-- area_sqft: {area_sqft}
-- address: {address}
+- business_type: <business_type>
+- area_sqft: <area_sqft>
+- address: <address>
 
 ELECTRICITY_SUMMARIZER_PROMPT:
-{sub-prompt 1 text}
+<sub-prompt 1 text>
 
 GIS_AGENT_PROMPT:
-{sub-prompt 2 text}
+<sub-prompt 2 text>
 
 Rules
 - Do not add extra information beyond what the user provided

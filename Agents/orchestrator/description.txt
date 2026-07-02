@@ -1,0 +1,1 @@
+The Orchestrator Agent is the top-level sequential pipeline for commercial space analysis in Bangalore. It runs three stages in order: the Prompt Splitter parses the user query, the Parallel Research Agent runs electricity and GIS analysis concurrently, and the Report Agent generates a styled HTML report with the combined findings.

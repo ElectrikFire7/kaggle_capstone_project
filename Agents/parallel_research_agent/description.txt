@@ -1,0 +1,1 @@
+The Parallel Research Agent runs the Electricity Summarizer Agent and GIS Agent simultaneously for a commercial space in Bangalore. Given a business type, area, and address, it produces both an electricity cost estimate and a spatial location intelligence report in parallel, saving time by executing both analyses concurrently.

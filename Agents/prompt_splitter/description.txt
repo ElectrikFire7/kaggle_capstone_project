@@ -1,0 +1,1 @@
+The Prompt Splitter Agent parses a free-form user query about a commercial space in Bangalore and extracts structured fields (business type, area in square feet, and address/location). It then generates two tailored sub-prompts: one for the Electricity Summarizer Agent and one for the GIS Agent, formatted so each sub-agent receives exactly the inputs it needs.

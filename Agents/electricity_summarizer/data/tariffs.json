@@ -1,0 +1,45 @@
+{
+  "commercial": {
+    "description": "LT-5(a) Commercial and allied activities - BESCOM Bangalore",
+    "slabs": [
+      { "min_units": 0, "max_units": 50, "per_unit_cost": 6.95 },
+      { "min_units": 51, "max_units": 100, "per_unit_cost": 8.00 },
+      { "min_units": 101, "max_units": 200, "per_unit_cost": 8.50 },
+      { "min_units": 201, "max_units": 500, "per_unit_cost": 9.00 },
+      { "min_units": 501, "max_units": null, "per_unit_cost": 9.50 }
+    ],
+    "fixed_charge_per_kw": 85,
+    "tax_percent": 9.0,
+    "fac_surcharge_percent": 5.0
+  },
+  "industrial": {
+    "description": "LT-4(a) Small Scale Industries - BESCOM Bangalore",
+    "slabs": [
+      { "min_units": 0, "max_units": 500, "per_unit_cost": 7.20 },
+      { "min_units": 501, "max_units": null, "per_unit_cost": 7.75 }
+    ],
+    "fixed_charge_per_kw": 75,
+    "tax_percent": 9.0,
+    "fac_surcharge_percent": 5.0
+  },
+  "it_ites": {
+    "description": "HT-2(a) IT/ITES - BESCOM Bangalore",
+    "slabs": [
+      { "min_units": 0, "max_units": null, "per_unit_cost": 6.50 }
+    ],
+    "fixed_charge_per_kw": 70,
+    "tax_percent": 9.0,
+    "fac_surcharge_percent": 5.0
+  },
+  "residential_converted": {
+    "description": "LT-2(b) Residential premises used for commercial purpose - BESCOM Bangalore",
+    "slabs": [
+      { "min_units": 0, "max_units": 100, "per_unit_cost": 5.90 },
+      { "min_units": 101, "max_units": 200, "per_unit_cost": 7.30 },
+      { "min_units": 201, "max_units": null, "per_unit_cost": 8.50 }
+    ],
+    "fixed_charge_per_kw": 60,
+    "tax_percent": 9.0,
+    "fac_surcharge_percent": 5.0
+  }
+}

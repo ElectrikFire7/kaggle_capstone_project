@@ -1,0 +1,1 @@
+The Electricity Summarizer Agent estimates electricity consumption and monthly cost for commercial spaces in Bangalore. It takes business type, area, and location as inputs and uses BESCOM tariff data, location-based adjustments, and business-specific benchmarks to produce a clear cost estimate with bill breakdown.

@@ -1,0 +1,1 @@
+The GIS Agent analyzes commercial locations in Bangalore by geocoding addresses, evaluating road network accessibility, scoring visibility based on road frontage and nearby landmarks, and detecting competition from similar businesses in the area using OpenStreetMap data.

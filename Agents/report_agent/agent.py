@@ -34,15 +34,15 @@ report_agent = LlmAgent(
     name="report_agent",
 
     # AI model to use - Gemini 2.0 Flash for fast output parsing and tool invocation
-    model="gemini-2.0-flash",
+    model="gemini-flash-latest",
 
     # Load detailed instructions from external text file
     # Instructions tell the agent how to parse sub-agent outputs and call write_report
-    instruction=load_instructions_file("Agents/report_agent/instructions.txt"),
+    instruction=load_instructions_file(os.path.join(os.path.dirname(__file__), "instructions.txt")),
 
     # Load agent description from external text file
     # Provides a brief summary of this agent's report generation role
-    description=load_instructions_file("Agents/report_agent/description.txt"),
+    description=load_instructions_file(os.path.join(os.path.dirname(__file__), "description.txt")),
 
     # Tools available to this agent:
     # write_report generates the styled HTML file in the output/ directory

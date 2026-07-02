@@ -31,13 +31,13 @@ prompt_splitter_agent = LlmAgent(
     name="prompt_splitter_agent",
 
     # AI model to use - Gemini 2.0 Flash for fast prompt parsing and reformatting
-    model="gemini-2.0-flash",
+    model="gemini-flash-latest",
 
     # Load detailed instructions from external text file
     # Instructions tell the agent how to parse user queries and generate sub-prompts
-    instruction=load_instructions_file("Agents/prompt_splitter/instructions.txt"),
+    instruction=load_instructions_file(os.path.join(os.path.dirname(__file__), "instructions.txt")),
 
     # Load agent description from external text file
     # Provides a brief summary of this agent's prompt splitting role
-    description=load_instructions_file("Agents/prompt_splitter/description.txt"),
+    description=load_instructions_file(os.path.join(os.path.dirname(__file__), "description.txt")),
 )

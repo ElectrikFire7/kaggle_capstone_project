@@ -55,15 +55,15 @@ gis_agent = LlmAgent(
     name="gis_agent",
 
     # AI model to use - Gemini 2.0 Flash for fast spatial analysis
-    model="gemini-2.0-flash",
+    model="gemini-flash-latest",
 
     # Load detailed instructions from external text file
     # Instructions tell the agent how to use the skill and tools together
-    instruction=load_instructions_file("Agents/gis_agent/instructions.txt"),
+    instruction=load_instructions_file(os.path.join(os.path.dirname(__file__), "instructions.txt")),
 
     # Load agent description from external text file
     # Provides a brief summary of this agent's spatial analysis role
-    description=load_instructions_file("Agents/gis_agent/description.txt"),
+    description=load_instructions_file(os.path.join(os.path.dirname(__file__), "description.txt")),
 
     # Tools available to this agent:
     # 1. SkillToolset with the spatial_analysis skill for structured guidance

@@ -47,5 +47,5 @@ root_agent = SequentialAgent(
     ],
 
     # Load agent description from external text file
-    description=load_instructions_file("Agents/orchestrator/description.txt"),
+    description=load_instructions_file(os.path.join(os.path.dirname(__file__), "description.txt")),
 )

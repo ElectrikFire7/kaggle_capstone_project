@@ -45,5 +45,5 @@ parallel_research_agent = ParallelAgent(
 
     # Load agent description from external text file
     # Provides a brief summary of this agent's parallel research role
-    description=load_instructions_file("Agents/parallel_research_agent/description.txt"),
+    description=load_instructions_file(os.path.join(os.path.dirname(__file__), "description.txt")),
 )

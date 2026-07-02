@@ -1,5 +1,5 @@
 ---
-name: spatial_analysis
+name: spatial-analysis
 display_name: Spatial Analysis
 description: >
   Performs a complete spatial analysis of a commercial location in Bangalore.

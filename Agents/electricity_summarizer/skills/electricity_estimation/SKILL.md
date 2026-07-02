@@ -1,5 +1,5 @@
 ---
-name: electricity_estimation
+name: electricity-estimation
 display_name: Electricity Estimation
 description: >
   Estimates electricity consumption and monthly cost for a commercial space in Bangalore.

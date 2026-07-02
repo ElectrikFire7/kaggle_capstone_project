@@ -32,7 +32,7 @@ from Agents.parallel_research_agent.agent import parallel_research_agent
 from Agents.report_agent.agent import report_agent
 
 # Create the Orchestrator Agent instance
-orchestrator_agent = SequentialAgent(
+root_agent = SequentialAgent(
     # Agent identifier - unique name for this agent in the system
     name="orchestrator_agent",
 

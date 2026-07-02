@@ -22,6 +22,7 @@ from google.adk.agents import ParallelAgent  # Workflow agent for parallel execu
 
 # Add the project root directory to Python path so we can import agent modules
 # This allows importing from the Agents directory two levels up from current file
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 # Import utility function to load instruction files from text files

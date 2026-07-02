@@ -31,11 +31,11 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 from utils.file_loader import load_instructions_file  # Helper to read instruction text files
 
 # Import the individual tools that the agent will use
-from gis_agent.tools.geocoder import geocode_address
-from gis_agent.tools.road_network import get_nearby_roads
-from gis_agent.tools.accessibility import score_accessibility
-from gis_agent.tools.visibility import score_visibility
-from gis_agent.tools.competition import find_competition
+from .tools.geocoder import geocode_address
+from .tools.road_network import get_nearby_roads
+from .tools.accessibility import score_accessibility
+from .tools.visibility import score_visibility
+from .tools.competition import find_competition
 
 # ---- Load the Spatial Analysis Skill ----
 # The skill provides structured instructions for the agent to follow

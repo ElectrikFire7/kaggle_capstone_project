@@ -26,7 +26,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 from utils.file_loader import load_instructions_file  # Helper to read instruction text files
 
 # Import the report writing tool
-from Agents.report_agent.tools.report_writer import write_report
+from report_agent.tools.report_writer import write_report
 
 # Create the Report Agent instance
 report_agent = LlmAgent(

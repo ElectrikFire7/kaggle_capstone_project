@@ -31,11 +31,11 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 from utils.file_loader import load_instructions_file  # Helper to read instruction text files
 
 # Import the individual tools that the agent will use
-from Agents.electricity_summarizer.tools.tariff import get_tariff
-from Agents.electricity_summarizer.tools.load_estimator import estimate_load
-from Agents.electricity_summarizer.tools.consumption import calculate_consumption
-from Agents.electricity_summarizer.tools.billing import calculate_bill
-from Agents.electricity_summarizer.tools.location import get_location_adjustment
+from electricity_summarizer.tools.tariff import get_tariff
+from electricity_summarizer.tools.load_estimator import estimate_load
+from electricity_summarizer.tools.consumption import calculate_consumption
+from electricity_summarizer.tools.billing import calculate_bill
+from electricity_summarizer.tools.location import get_location_adjustment
 
 # ---- Load the Electricity Estimation Skill ----
 # The skill provides structured instructions for the agent to follow

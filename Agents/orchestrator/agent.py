@@ -27,9 +27,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 from utils.file_loader import load_instructions_file  # Helper to read instruction text files
 
 # Import the three sub-agents that form the sequential pipeline
-from Agents.prompt_splitter.agent import prompt_splitter_agent
-from Agents.parallel_research_agent.agent import parallel_research_agent
-from Agents.report_agent.agent import report_agent
+from prompt_splitter.agent import prompt_splitter_agent
+from parallel_research_agent.agent import parallel_research_agent
+from report_agent.agent import report_agent
 
 # Create the Orchestrator Agent instance
 root_agent = SequentialAgent(

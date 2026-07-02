@@ -28,8 +28,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 from utils.file_loader import load_instructions_file  # Helper to read instruction text files
 
 # Import the two sub-agents that will run in parallel
-from Agents.electricity_summarizer.agent import electricity_summarizer_agent
-from Agents.gis_agent.agent import gis_agent
+from electricity_summarizer.agent import electricity_summarizer_agent
+from gis_agent.agent import gis_agent
 
 # Create the Parallel Research Agent instance
 parallel_research_agent = ParallelAgent(

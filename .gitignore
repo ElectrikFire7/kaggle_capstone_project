@@ -1,1 +1,6 @@
-/venv.idea/
+/venv
+.idea/
+/Agents/.adk
+/Agents/.env
+__pycache__/
+/Agents/orchestrator/.adk

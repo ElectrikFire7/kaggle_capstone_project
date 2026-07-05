@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commercial Space Report - Restaurant at JP Nagar 7th Block, Bangalore</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+            background-color: #f5f6fa;
+            color: #2d3436;
+            line-height: 1.6;
+            padding: 24px;
+        }
+
+        .report-container {
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .report-header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: #ffffff;
+            padding: 32px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .report-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .report-header .subtitle {
+            font-size: 14px;
+            opacity: 0.85;
+        }
+
+        .business-info {
+            display: flex;
+            gap: 24px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .business-info .info-item {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .info-item .info-label {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 0.5px;
+            display: block;
+            opacity: 0.8;
+        }
+
+        .tags-section {
+            background: #ffffff;
+            padding: 20px 32px;
+            border-left: 1px solid #e0e0e0;
+            border-right: 1px solid #e0e0e0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .tags-section .tags-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #636e72;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-right: 8px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .report-body {
+            background: #ffffff;
+            border-left: 1px solid #e0e0e0;
+            border-right: 1px solid #e0e0e0;
+        }
+
+        .section {
+            padding: 28px 32px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section h2 .icon {
+            font-size: 20px;
+        }
+
+        .section p {
+            font-size: 15px;
+            color: #4a4a4a;
+            margin-bottom: 12px;
+        }
+
+        .cost-highlight {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+        }
+
+        .cost-highlight .cost-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .cost-highlight .cost-label {
+            font-size: 13px;
+            color: #636e72;
+        }
+
+        .consumers-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .consumers-list li {
+            background: #edf2f7;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #4a5568;
+        }
+
+        .score-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .score-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #4a4a4a;
+            min-width: 110px;
+        }
+
+        .score-bar-container {
+            flex: 1;
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .score-bar {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+
+        .score-value {
+            font-size: 13px;
+            color: #636e72;
+            min-width: 120px;
+            text-align: right;
+        }
+
+        .competition-box {
+            display: flex;
+            gap: 20px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .competition-stat {
+            background: #f8f9fa;
+            padding: 14px 20px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 140px;
+        }
+
+        .competition-stat .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .competition-stat .stat-label {
+            font-size: 12px;
+            color: #636e72;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .recommendation-box {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border: 1px solid #dee2e6;
+            padding: 20px 24px;
+            border-radius: 8px;
+            margin-top: 8px;
+        }
+
+        .recommendation-box p {
+            font-size: 15px;
+            color: #2d3436;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .report-footer {
+            background: #f8f9fa;
+            padding: 16px 32px;
+            border-radius: 0 0 12px 12px;
+            border: 1px solid #e0e0e0;
+            border-top: none;
+            text-align: center;
+            font-size: 12px;
+            color: #b2bec3;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 12px;
+            }
+            .report-header {
+                padding: 20px;
+            }
+            .section {
+                padding: 20px;
+            }
+            .business-info {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .score-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+            .score-value {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+
+        <div class="report-header">
+            <h1>Commercial Space Analysis Report</h1>
+            <p class="subtitle">Bangalore, India &mdash; Generated on 03 July 2026, 12:50 AM</p>
+            <div class="business-info">
+                <div class="info-item">
+                    <span class="info-label">Business Type</span>
+                    Restaurant
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Area</span>
+                    1,200 sq ft
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Location</span>
+                    JP Nagar 7th Block, Bangalore
+                </div>
+            </div>
+        </div>
+
+        <div class="tags-section">
+            <span class="tags-label">Key Findings</span>
+            <span class="tag" style="background-color:#f8d7da;color:#721c24;border:1px solid #f5c6cb">Electricity Usage: High</span><span class="tag" style="background-color:#d1ecf1;color:#0c5460;border:1px solid #bee5eb">Accessibility: Good</span><span class="tag" style="background-color:#f8d7da;color:#721c24;border:1px solid #f5c6cb">Visibility: High</span><span class="tag" style="background-color:#f8d7da;color:#721c24;border:1px solid #f5c6cb">Competition: High</span>
+        </div>
+
+        <div class="report-body">
+
+            <div class="section">
+                <h2><span class="icon">&#9889;</span> Electricity Cost Estimate</h2>
+                <p>Estimated monthly electricity consumption ranges from 4,300 to 7,200 kWh, leading to a projected monthly cost between INR 42,000 and INR 69,000. These figures are driven by the intensive nature of commercial food service operations under BESCOM commercial tariffs.</p>
+                <div class="cost-highlight">
+                    <div class="cost-label">Estimated Monthly Cost</div>
+                    <div class="cost-value">&#8377;42,000 - 69,000</div>
+                </div>
+                <p style="font-size:13px;color:#636e72;margin-bottom:4px;">Top Electricity Consumers:</p>
+                <ul class="consumers-list">
+                    <li>commercial kitchen appliances</li>
+<li>refrigeration</li>
+<li>air conditioning</li>
+<li>lighting</li>
+
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2><span class="icon">&#128205;</span> Location Intelligence</h2>
+                <p>JP Nagar 7th Block offers high residential density and excellent local connectivity. Despite high competition, its premium demographics and strong visibility (Score: 85/100) make it a highly attractive location for a cozy neighborhood dining concept.</p>
+                
+    <div class="score-row">
+        <div class="score-label">Accessibility</div>
+        <div class="score-bar-container">
+            <div class="score-bar" style="width:80%;background-color:#28a745"></div>
+        </div>
+        <div class="score-value">80/100 (Good)</div>
+    </div>
+    
+    <div class="score-row">
+        <div class="score-label">Visibility</div>
+        <div class="score-bar-container">
+            <div class="score-bar" style="width:85%;background-color:#28a745"></div>
+        </div>
+        <div class="score-value">85/100 (High)</div>
+    </div>
+    
+            </div>
+
+            <div class="section">
+                <h2><span class="icon">&#127970;</span> Competition Overview</h2>
+                <div class="competition-box">
+                    <div class="competition-stat">
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">Competitors Nearby</div>
+                    </div>
+                    <div class="competition-stat">
+                        <div class="stat-value">High</div>
+                        <div class="stat-label">Competition Level</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2><span class="icon">&#9989;</span> Overall Recommendation</h2>
+                <div class="recommendation-box">
+                    <p>Highly recommended. Excellent local demographics and strong visibility make this location highly viable. Focus on energy-efficient kitchen equipment to optimize utility costs.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="report-footer">
+            Capstone Project &mdash; Commercial Space Analysis &mdash; Bangalore, India
+        </div>
+
+    </div>
+</body>
+</html>

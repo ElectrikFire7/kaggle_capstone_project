@@ -189,10 +189,80 @@ def _get_score_bar_html(label: str, score: int, rating: str) -> str:
     """
 
 
+def _convert_inline_markdown(text: str) -> str:
+    """
+    Converts inline markdown syntax to HTML within a line of text.
+    Handles bold, italic, inline code, and cleans up leftover markers.
+    """
+    # Inline code: `code` -> <code>code</code> (do this first to protect contents)
+    text = re.sub(r"`([^`]+)`", r"<code>\1</code>", text)
+    # Bold: **text** -> <strong>text</strong>
+    text = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", text)
+    # Italic: *text* -> <em>text</em> (single asterisks, not inside words)
+    text = re.sub(r"(?<!\w)\*([^*]+)\*(?!\w)", r"<em>\1</em>", text)
+    # Clean up any stray asterisks that weren't matched (e.g., unbalanced)
+    text = re.sub(r"\*{2,}", "", text)
+    return text
+
+
+def _is_table_separator(line: str) -> bool:
+    """Checks if a line is a markdown table separator (e.g., |---|---|)."""
+    return bool(re.match(r"^\|[\s\-:]+(\|[\s\-:]+)+\|?$", line.strip()))
+
+
+def _parse_table_rows(lines: list, start_idx: int) -> tuple:
+    """
+    Parses consecutive markdown table lines starting from start_idx.
+    Returns (html_string, number_of_lines_consumed).
+    """
+    table_lines = []
+    idx = start_idx
+    while idx < len(lines):
+        stripped = lines[idx].strip()
+        if stripped.startswith("|") or _is_table_separator(stripped):
+            table_lines.append(stripped)
+            idx += 1
+        else:
+            break
+
+    if not table_lines:
+        return "", 0
+
+    html = '<div class="table-wrapper"><table class="detail-table">'
+    is_first_data_row = True
+
+    for tline in table_lines:
+        if _is_table_separator(tline):
+            continue
+        # Split cells by pipe, strip edges
+        cells = [c.strip() for c in tline.split("|")]
+        # Remove empty first/last from leading/trailing pipes
+        if cells and cells[0] == "":
+            cells = cells[1:]
+        if cells and cells[-1] == "":
+            cells = cells[:-1]
+
+        if is_first_data_row:
+            html += "<thead><tr>"
+            for cell in cells:
+                html += f"<th>{_convert_inline_markdown(cell)}</th>"
+            html += "</tr></thead><tbody>"
+            is_first_data_row = False
+        else:
+            html += "<tr>"
+            for cell in cells:
+                html += f"<td>{_convert_inline_markdown(cell)}</td>"
+            html += "</tr>"
+
+    html += "</tbody></table></div>"
+    return html, idx - start_idx
+
+
 def _text_to_html(text: str) -> str:
     """
     Converts raw agent text output to styled HTML, preserving structure.
-    Handles headings, bullet points, numbered lists, and paragraphs.
+    Handles markdown headings, bold, italic, inline code, tables,
+    bullet points, numbered lists, key-value pairs, and paragraphs.
     """
     if not text:
         return "<p>No data available.</p>"
@@ -201,9 +271,10 @@ def _text_to_html(text: str) -> str:
     html_parts = []
     in_list = False
     list_type = None  # "ul" or "ol"
+    i = 0
 
-    for line in lines:
-        stripped = line.strip()
+    while i < len(lines):
+        stripped = lines[i].strip()
 
         # Skip empty lines — close any open list and add spacing
         if not stripped:
@@ -212,62 +283,82 @@ def _text_to_html(text: str) -> str:
                 in_list = False
                 list_type = None
             html_parts.append('<div class="spacer"></div>')
+            i += 1
             continue
 
-        # Detect headings: lines ending with colon or lines that are ALL CAPS
-        # or lines matching patterns like "1. Section Name" or "## Heading"
+        # ---- Markdown tables ----
+        if stripped.startswith("|"):
+            if in_list:
+                html_parts.append(f"</{list_type}>")
+                in_list = False
+                list_type = None
+            table_html, consumed = _parse_table_rows(lines, i)
+            if table_html:
+                html_parts.append(table_html)
+                i += consumed
+                continue
+
+        # ---- Headings ----
         is_heading = False
 
-        # Markdown-style headings
-        if stripped.startswith("## "):
+        # Markdown headings: ####, ###, ##, #
+        heading_match = re.match(r"^(#{1,6})\s+(.+)$", stripped)
+        if heading_match:
             if in_list:
                 html_parts.append(f"</{list_type}>")
                 in_list = False
                 list_type = None
-            html_parts.append(f'<h4 class="detail-heading">{stripped[3:]}</h4>')
+            level = len(heading_match.group(1))
+            content = _convert_inline_markdown(heading_match.group(2))
+            # Map markdown levels to h3-h6, capping at h6
+            tag_level = min(level + 2, 6)
+            html_parts.append(f'<h{tag_level} class="detail-heading">{content}</h{tag_level}>')
             is_heading = True
-        elif stripped.startswith("# "):
-            if in_list:
-                html_parts.append(f"</{list_type}>")
-                in_list = False
-                list_type = None
-            html_parts.append(f'<h3 class="detail-heading">{stripped[2:]}</h3>')
-            is_heading = True
-        # Section headings: ALL CAPS lines or lines ending with colon (but not short key:value pairs)
-        elif stripped.isupper() and len(stripped) > 3 and ":" not in stripped:
+
+        # ALL CAPS section headings (not key:value)
+        if not is_heading and stripped.isupper() and len(stripped) > 3 and ":" not in stripped:
             if in_list:
                 html_parts.append(f"</{list_type}>")
                 in_list = False
                 list_type = None
             html_parts.append(f'<h4 class="detail-heading">{stripped.title()}</h4>')
             is_heading = True
-        # Numbered section headings like "1. Accessibility Analysis" or "2. Visibility Analysis"
-        elif re.match(r"^\d+\.\s+[A-Z]", stripped) and len(stripped) > 5 and not re.match(r"^\d+\.\s+\S+\s*$", stripped):
-            if in_list:
-                html_parts.append(f"</{list_type}>")
-                in_list = False
-                list_type = None
-            html_parts.append(f'<h4 class="detail-heading">{stripped}</h4>')
-            is_heading = True
+
+        # Numbered section headings like "1. Accessibility Analysis"
+        if not is_heading and re.match(r"^\d+\.\s+[A-Z]", stripped) and len(stripped) > 5:
+            # Check it's not a short single-word item (those are list items)
+            words_after_num = re.sub(r"^\d+\.\s*", "", stripped).split()
+            if len(words_after_num) > 1:
+                if in_list:
+                    html_parts.append(f"</{list_type}>")
+                    in_list = False
+                    list_type = None
+                html_parts.append(f'<h4 class="detail-heading">{_convert_inline_markdown(stripped)}</h4>')
+                is_heading = True
+
         # Key: Value headings (like "BWSSB TARIFF CATEGORY: Non Domestic")
-        elif ":" in stripped and stripped.split(":")[0].isupper() and len(stripped.split(":")[0]) > 3:
-            if in_list:
-                html_parts.append(f"</{list_type}>")
-                in_list = False
-                list_type = None
-            key, _, value = stripped.partition(":")
-            html_parts.append(
-                f'<div class="detail-kv">'
-                f'<span class="detail-key">{key.strip()}:</span> '
-                f'<span class="detail-value">{value.strip()}</span>'
-                f'</div>'
-            )
-            is_heading = True
+        if not is_heading and ":" in stripped:
+            key_part = stripped.split(":")[0].strip()
+            # Only treat as KV heading if key is ALL CAPS and longer than 3 chars
+            if key_part.isupper() and len(key_part) > 3:
+                if in_list:
+                    html_parts.append(f"</{list_type}>")
+                    in_list = False
+                    list_type = None
+                key, _, value = stripped.partition(":")
+                html_parts.append(
+                    f'<div class="detail-kv">'
+                    f'<span class="detail-key">{_convert_inline_markdown(key.strip())}:</span> '
+                    f'<span class="detail-value">{_convert_inline_markdown(value.strip())}</span>'
+                    f'</div>'
+                )
+                is_heading = True
 
         if is_heading:
+            i += 1
             continue
 
-        # Bullet points
+        # ---- Bullet points ----
         if stripped.startswith("- ") or stripped.startswith("* "):
             if not in_list or list_type != "ul":
                 if in_list:
@@ -275,19 +366,12 @@ def _text_to_html(text: str) -> str:
                 html_parts.append('<ul class="detail-list">')
                 in_list = True
                 list_type = "ul"
-            content = stripped[2:].strip()
-            # Check for bold key: value within bullet
-            if ":" in content:
-                key, _, value = content.partition(":")
-                if key and value:
-                    html_parts.append(f"<li><strong>{key.strip()}:</strong>{value}</li>")
-                else:
-                    html_parts.append(f"<li>{content}</li>")
-            else:
-                html_parts.append(f"<li>{content}</li>")
+            content = _convert_inline_markdown(stripped[2:].strip())
+            html_parts.append(f"<li>{content}</li>")
+            i += 1
             continue
 
-        # Numbered list items (but not section headings — those were caught above)
+        # ---- Numbered list items ----
         if re.match(r"^\d+[\.\)]\s", stripped):
             if not in_list or list_type != "ol":
                 if in_list:
@@ -296,15 +380,18 @@ def _text_to_html(text: str) -> str:
                 in_list = True
                 list_type = "ol"
             content = re.sub(r"^\d+[\.\)]\s*", "", stripped)
+            content = _convert_inline_markdown(content)
             html_parts.append(f"<li>{content}</li>")
+            i += 1
             continue
 
-        # Regular paragraph
+        # ---- Regular paragraph ----
         if in_list:
             html_parts.append(f"</{list_type}>")
             in_list = False
             list_type = None
-        html_parts.append(f'<p class="detail-text">{stripped}</p>')
+        html_parts.append(f'<p class="detail-text">{_convert_inline_markdown(stripped)}</p>')
+        i += 1
 
     # Close any remaining open list
     if in_list:
@@ -571,6 +658,45 @@ def _build_html(
 
         .spacer {{
             height: 8px;
+        }}
+
+        .table-wrapper {{
+            overflow-x: auto;
+            margin: 12px 0;
+        }}
+
+        .detail-table {{
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }}
+
+        .detail-table th {{
+            background: #f1f3f5;
+            font-weight: 700;
+            color: #2c3e50;
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 2px solid #dee2e6;
+        }}
+
+        .detail-table td {{
+            padding: 8px 14px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #4a4a4a;
+        }}
+
+        .detail-table tbody tr:hover {{
+            background: #f8f9fa;
+        }}
+
+        code {{
+            background: #f1f3f5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: 'SF Mono', Monaco, Consolas, monospace;
+            color: #e74c3c;
         }}
 
         /* ---- Visual Elements ---- */

@@ -13,7 +13,7 @@ Built on [Google Agent Development Kit (ADK)](https://google.github.io/adk-docs/
 ### 1. Clone the repository
 
 ```bash
-git clone <repo-url>
+git clone <repo-url> 
 cd kaggle_capstone_project
 ```
 

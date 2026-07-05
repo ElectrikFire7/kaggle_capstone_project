@@ -31,6 +31,11 @@ def write_report(
     zoning_status: str,
     compliance_risk_level: str,
     reputation_status: str,
+    water_summary: str,
+    water_cost_range: str,
+    water_usage_level: str,
+    water_consumption_kl: float,
+    major_water_consumers: str,
     overall_recommendation: str,
 ) -> dict:
     """
@@ -56,6 +61,11 @@ def write_report(
         zoning_status: One of "Suitable", "Restricted", or "Unknown".
         compliance_risk_level: One of "Low", "Medium", or "High".
         reputation_status: One of "Clean", "Minor Concerns", or "Major Concerns".
+        water_summary: Concise paragraph summarizing water consumption and cost findings.
+        water_cost_range: Monthly water cost range string (e.g., "3,500 - 5,200").
+        water_usage_level: One of "Low", "Medium", or "High".
+        water_consumption_kl: Monthly water consumption in kiloliters.
+        major_water_consumers: Comma-separated list of top water consumers.
         overall_recommendation: Brief overall assessment combining all perspectives.
 
     Returns:
@@ -98,6 +108,11 @@ def write_report(
         zoning_status=zoning_status,
         compliance_risk_level=compliance_risk_level,
         reputation_status=reputation_status,
+        water_summary=water_summary,
+        water_cost_range=water_cost_range,
+        water_usage_level=water_usage_level,
+        water_consumption_kl=water_consumption_kl,
+        major_water_consumers=major_water_consumers,
         overall_recommendation=overall_recommendation,
         tag_colors=tag_colors,
         timestamp=timestamp,
@@ -198,6 +213,11 @@ def _build_html(
     zoning_status: str,
     compliance_risk_level: str,
     reputation_status: str,
+    water_summary: str,
+    water_cost_range: str,
+    water_usage_level: str,
+    water_consumption_kl: float,
+    major_water_consumers: str,
     overall_recommendation: str,
     tag_colors: dict,
     timestamp: str,
@@ -218,9 +238,17 @@ def _build_html(
         if license_item:
             licenses_list += f"<li>{license_item}</li>\n"
 
+    # Build water consumer list items
+    water_consumers_list = ""
+    for water_consumer in major_water_consumers.split(","):
+        water_consumer = water_consumer.strip()
+        if water_consumer:
+            water_consumers_list += f"<li>{water_consumer}</li>\n"
+
     # Build tags section
     tags_html = (
         _get_tag_html("Electricity Usage", electricity_usage_level, tag_colors)
+        + _get_tag_html("Water Usage", water_usage_level, tag_colors)
         + _get_tag_html("Accessibility", accessibility_rating, tag_colors)
         + _get_tag_html("Visibility", visibility_rating, tag_colors)
         + _get_tag_html("Competition", competition_level, tag_colors)
@@ -607,6 +635,29 @@ def _build_html(
                 <p style="font-size:13px;color:#636e72;margin-bottom:4px;">Top Electricity Consumers:</p>
                 <ul class="consumers-list">
                     {consumers_list}
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2><span class="icon">&#128167;</span> Water Resource Estimate</h2>
+                <p>{water_summary}</p>
+                <div class="cost-highlight" style="border-left-color:#0984e3;">
+                    <div class="cost-label">Estimated Monthly Water Cost</div>
+                    <div class="cost-value">&#8377;{water_cost_range}</div>
+                </div>
+                <div class="competition-box">
+                    <div class="competition-stat">
+                        <div class="stat-value">{water_consumption_kl}</div>
+                        <div class="stat-label">Monthly KL</div>
+                    </div>
+                    <div class="competition-stat">
+                        <div class="stat-value">{water_usage_level}</div>
+                        <div class="stat-label">Usage Level</div>
+                    </div>
+                </div>
+                <p style="font-size:13px;color:#636e72;margin-top:16px;margin-bottom:4px;">Top Water Consumers:</p>
+                <ul class="consumers-list">
+                    {water_consumers_list}
                 </ul>
             </div>
 

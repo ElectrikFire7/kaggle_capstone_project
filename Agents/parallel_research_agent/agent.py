@@ -28,10 +28,11 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 # Import utility function to load instruction files from text files
 from utils.file_loader import load_instructions_file  # Helper to read instruction text files
 
-# Import the three sub-agents that will run in parallel
+# Import the four sub-agents that will run in parallel
 from electricity_summarizer.agent import electricity_summarizer_agent
 from gis_agent.agent import gis_agent
 from legal_compliance_agent.agent import legal_compliance_agent
+from water_resource_agent.agent import water_resource_agent
 
 # Create the Parallel Research Agent instance
 parallel_research_agent = ParallelAgent(
@@ -39,11 +40,12 @@ parallel_research_agent = ParallelAgent(
     name="parallel_research_agent",
 
     # Sub-agents that will be executed in parallel
-    # All three agents receive the same user query and run concurrently
+    # All four agents receive the same user query and run concurrently
     sub_agents=[
         electricity_summarizer_agent,
         gis_agent,
         legal_compliance_agent,
+        water_resource_agent,
     ],
 
     # Load agent description from external text file

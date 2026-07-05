@@ -1,0 +1,1 @@
+The Water Resource Agent estimates monthly water consumption and operational cost for a commercial space in Bangalore using official BWSSB (Bangalore Water Supply and Sewerage Board) data. Given a business type and area, it determines the applicable tariff category, calculates expected water usage, and identifies the major water consumers for the business.

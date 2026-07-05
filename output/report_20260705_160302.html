@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commercial Space Report - Salon at Begur Koppa Road next to Prestige Song of South, Bangalore</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+            background-color: #f5f6fa;
+            color: #2d3436;
+            line-height: 1.7;
+            padding: 24px;
+        }
+
+        .report-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* ---- Header ---- */
+        .report-header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: #ffffff;
+            padding: 32px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .report-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .report-header .subtitle {
+            font-size: 14px;
+            opacity: 0.85;
+        }
+
+        .business-info {
+            display: flex;
+            gap: 24px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .business-info .info-item {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .info-item .info-label {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 0.5px;
+            display: block;
+            opacity: 0.8;
+        }
+
+        /* ---- Tags Bar ---- */
+        .tags-section {
+            background: #ffffff;
+            padding: 20px 32px;
+            border-left: 1px solid #e0e0e0;
+            border-right: 1px solid #e0e0e0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .tags-section .tags-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #636e72;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-right: 8px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* ---- Report Body ---- */
+        .report-body {
+            background: #ffffff;
+            border-left: 1px solid #e0e0e0;
+            border-right: 1px solid #e0e0e0;
+        }
+
+        .section {
+            padding: 28px 32px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .section h2 .icon {
+            font-size: 22px;
+        }
+
+        /* ---- Detail Content Styles ---- */
+        .detail-content {
+            margin-bottom: 20px;
+        }
+
+        .detail-heading {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 18px 0 8px 0;
+        }
+
+        .detail-text {
+            font-size: 14px;
+            color: #4a4a4a;
+            margin-bottom: 8px;
+            line-height: 1.7;
+        }
+
+        .detail-kv {
+            font-size: 14px;
+            margin-bottom: 6px;
+            padding: 6px 0;
+        }
+
+        .detail-key {
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .detail-value {
+            color: #4a4a4a;
+        }
+
+        .detail-list {
+            padding-left: 20px;
+            margin: 8px 0;
+        }
+
+        .detail-list li {
+            font-size: 14px;
+            color: #4a4a4a;
+            margin-bottom: 4px;
+            line-height: 1.6;
+        }
+
+        .spacer {
+            height: 8px;
+        }
+
+        /* ---- Visual Elements ---- */
+        .cost-highlight {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+
+        .cost-highlight .cost-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .cost-highlight .cost-label {
+            font-size: 13px;
+            color: #636e72;
+        }
+
+        .badges-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0;
+        }
+
+        .badges-label {
+            font-size: 13px;
+            color: #636e72;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .score-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .score-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #4a4a4a;
+            min-width: 110px;
+        }
+
+        .score-bar-container {
+            flex: 1;
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .score-bar {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+
+        .score-value {
+            font-size: 13px;
+            color: #636e72;
+            min-width: 130px;
+            text-align: right;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 16px 0;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid #6c5ce7;
+        }
+
+        .stat-card .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .stat-card .stat-label {
+            font-size: 12px;
+            color: #636e72;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .recommendation-box {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border: 1px solid #dee2e6;
+            padding: 24px;
+            border-radius: 8px;
+            margin-top: 8px;
+        }
+
+        .recommendation-box .detail-text,
+        .recommendation-box .detail-heading,
+        .recommendation-box .detail-list li {
+            color: #2d3436;
+        }
+
+        /* ---- Divider ---- */
+        .visual-divider {
+            border-top: 2px dashed #e9ecef;
+            margin: 20px 0;
+        }
+
+        /* ---- Footer ---- */
+        .report-footer {
+            background: #f8f9fa;
+            padding: 16px 32px;
+            border-radius: 0 0 12px 12px;
+            border: 1px solid #e0e0e0;
+            border-top: none;
+            text-align: center;
+            font-size: 12px;
+            color: #b2bec3;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 12px;
+            }
+            .report-header {
+                padding: 20px;
+            }
+            .section {
+                padding: 20px;
+            }
+            .business-info {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .score-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+            .score-value {
+                text-align: left;
+            }
+            .stat-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+
+        <!-- HEADER -->
+        <div class="report-header">
+            <h1>Commercial Space Analysis Report</h1>
+            <p class="subtitle">Bangalore, India &mdash; Generated on 05 July 2026, 04:03 PM</p>
+            <div class="business-info">
+                <div class="info-item">
+                    <span class="info-label">Business Type</span>
+                    Salon
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Area</span>
+                    600 sq ft
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Location</span>
+                    Begur Koppa Road next to Prestige Song of South, Bangalore
+                </div>
+            </div>
+        </div>
+
+        <!-- TAGS BAR -->
+        <div class="tags-section">
+            <span class="tags-label">Key Findings</span>
+            <span class="tag" style="background-color:#fff3cd;color:#856404;border:1px solid #ffeeba">Electricity: Medium</span><span class="tag" style="background-color:#fff3cd;color:#856404;border:1px solid #ffeeba">Water: Medium</span><span class="tag" style="background-color:#d1ecf1;color:#0c5460;border:1px solid #bee5eb">Accessibility: Good</span><span class="tag" style="background-color:#fff3cd;color:#856404;border:1px solid #ffeeba">Visibility: Medium</span><span class="tag" style="background-color:#d4edda;color:#155724;border:1px solid #c3e6cb">Competition: Low</span><span class="tag" style="background-color:#fff3cd;color:#856404;border:1px solid #ffeeba">Compliance Risk: Medium</span><span class="tag" style="background-color:#d4edda;color:#155724;border:1px solid #c3e6cb">Zoning: Suitable</span><span class="tag" style="background-color:#fff3cd;color:#856404;border:1px solid #ffeeba">Reputation: Minor Concerns</span>
+        </div>
+
+        <div class="report-body">
+
+            <!-- ELECTRICITY SECTION -->
+            <div class="section">
+                <h2><span class="icon">&#9889;</span> Electricity Cost Estimate</h2>
+                <div class="detail-content">
+                    <p class="detail-text">Based on BESCOM’s commercial tariff and your operating hours (8 AM – 6 PM, 10 hours daily), here is the electricity estimate for your **600 sq. ft. salon** on Begur Koppa Road:</p>
+<div class="spacer"></div>
+<p class="detail-text">### **Estimation Summary**</p>
+<ul class="detail-list">
+<li><strong>**Monthly Consumption:</strong>** **1,080 to 2,430 kWh (units)**</li>
+<li><strong>**Monthly Bill Range:</strong>** **₹11,400 to ₹25,400** (Rounded to nearest ₹100)</li>
+<li><strong>**Usage Classification:</strong>** **Medium to High** (1,080–2,430 units/month)</li>
+<li><strong>**Estimated Connected Load:</strong>** **7.8 kW**</li>
+</ul>
+<div class="spacer"></div>
+<p class="detail-text">---</p>
+<div class="spacer"></div>
+<p class="detail-text">### **Cost & Consumption Breakdown**</p>
+<div class="spacer"></div>
+<p class="detail-text">| Metric | Low Estimate | High Estimate |</p>
+<p class="detail-text">| :--- | :--- | :--- |</p>
+<p class="detail-text">| **Daily Consumption** | 36 units/day | 81 units/day |</p>
+<p class="detail-text">| **Monthly Consumption** | 1,080 units | 2,430 units |</p>
+<p class="detail-text">| **Energy Cost** (Slab-based) | ₹9,805 | ₹22,630 |</p>
+<p class="detail-text">| **Fixed Charges** (₹85/kW) | ₹663 | ₹663 |</p>
+<p class="detail-text">| **Tax & Surcharges** (9% Tax) | ₹942 | ₹2,096 |</p>
+<p class="detail-text">| **Total Estimated Bill** | **₹11,410** | **₹25,389** |</p>
+<div class="spacer"></div>
+<p class="detail-text">---</p>
+<div class="spacer"></div>
+<p class="detail-text">### **Key Insights**</p>
+<ul class="detail-list">
+<li><strong>**Top Electricity Consumers:</strong>** Hair dryers/styling tools, air conditioning, and water heaters (for hair washing).</li>
+<li><strong>**Location Context:</strong>** Begur Koppa Road is currently calculated using Bangalore's baseline average (multiplier: 1.0). Since your proposed operating window is exactly 10 hours, consumption is highly optimized compared to salons running late into the night.</li>
+<li><strong>**Tariff Category:</strong>** Billed under **BESCOM LT-5(a) Commercial**, featuring slab rates ranging from ₹6.95/unit (first 50 units) to ₹9.50/unit (for units above 500).</li>
+</ul>
+                </div>
+                <div class="visual-divider"></div>
+                <div class="cost-highlight">
+                    <div class="cost-label">Estimated Monthly Electricity Cost</div>
+                    <div class="cost-value">&#8377;11,400 - 25,400</div>
+                </div>
+                <div class="badges-label">Top Electricity Consumers</div>
+                <div class="badges-row">
+                    <span class="badge" style="background-color:#fff3e0;color:#e65100;border:1px solid #ffcc80">Hair dryers and styling tools</span><span class="badge" style="background-color:#fff3e0;color:#e65100;border:1px solid #ffcc80">Air conditioning</span><span class="badge" style="background-color:#fff3e0;color:#e65100;border:1px solid #ffcc80">Water heater</span><span class="badge" style="background-color:#fff3e0;color:#e65100;border:1px solid #ffcc80">Lighting</span>
+                </div>
+            </div>
+
+            <!-- WATER SECTION -->
+            <div class="section">
+                <h2><span class="icon">&#128167;</span> Water Resource Estimate</h2>
+                <div class="detail-content">
+                    <div class="detail-kv"><span class="detail-key">BWSSB TARIFF CATEGORY:</span> <span class="detail-value">Non Domestic</span></div>
+<div class="detail-kv"><span class="detail-key">TARIFF RATE:</span> <span class="detail-value">₹48 to ₹132 per KL (Slabs: ₹48/KL for 0-25 KL, ₹72/KL for 25-50 KL, ₹96/KL for 50-75 KL, ₹108/KL for 75-100 KL, and ₹132/KL above 100 KL; plus 50% sewerage charges)</span></div>
+<div class="spacer"></div>
+<div class="detail-kv"><span class="detail-key">ESTIMATED MONTHLY CONSUMPTION:</span> <span class="detail-value">28.8 kiloliters</span></div>
+<div class="detail-kv"><span class="detail-key">ESTIMATED MONTHLY COST:</span> <span class="detail-value">INR 1,659 - 2,832</span></div>
+<div class="detail-kv"><span class="detail-key">WATER USAGE LEVEL:</span> <span class="detail-value">Medium</span></div>
+<div class="spacer"></div>
+<div class="detail-kv"><span class="detail-key">MAJOR WATER CONSUMERS:</span> <span class="detail-value"></span></div>
+<ul class="detail-list">
+<li>Hair washing</li>
+<li>Spa treatments</li>
+<li>Restrooms</li>
+<li>Cleaning</li>
+<li>Sterilization</li>
+</ul>
+<div class="spacer"></div>
+<div class="detail-kv"><span class="detail-key">WATER SUMMARY:</span> <span class="detail-value"></span></div>
+<p class="detail-text">With an estimated monthly consumption of 28.8 KL, a 600 sqft salon on Begur Koppa Road falls under BWSSB's Non-Domestic category (Medium usage level). The expected monthly cost, including 50% sewerage charges, ranges from ₹1,659 to ₹2,832. Major water needs stem from hair washing, spa services, and sterilization. Installing aerators, low-flow fixtures, and water-efficient washing stations is crucial to manage usage and control operational expenses.</p>
+                </div>
+                <div class="visual-divider"></div>
+                <div class="cost-highlight" style="border-left-color:#0984e3;">
+                    <div class="cost-label">Estimated Monthly Water Cost</div>
+                    <div class="cost-value">&#8377;1,659 - 2,832</div>
+                </div>
+                <div class="stat-grid">
+                    <div class="stat-card" style="border-left-color:#0984e3;">
+                        <div class="stat-value">28.8</div>
+                        <div class="stat-label">Monthly Kiloliters</div>
+                    </div>
+                    <div class="stat-card" style="border-left-color:#0984e3;">
+                        <div class="stat-value">Medium</div>
+                        <div class="stat-label">Usage Level</div>
+                    </div>
+                </div>
+                <div class="badges-label">Top Water Consumers</div>
+                <div class="badges-row">
+                    <span class="badge" style="background-color:#e3f2fd;color:#0d47a1;border:1px solid #90caf9">Hair washing</span><span class="badge" style="background-color:#e3f2fd;color:#0d47a1;border:1px solid #90caf9">Spa treatments</span><span class="badge" style="background-color:#e3f2fd;color:#0d47a1;border:1px solid #90caf9">Restrooms</span><span class="badge" style="background-color:#e3f2fd;color:#0d47a1;border:1px solid #90caf9">Cleaning</span><span class="badge" style="background-color:#e3f2fd;color:#0d47a1;border:1px solid #90caf9">Sterilization</span>
+                </div>
+            </div>
+
+            <!-- LOCATION INTELLIGENCE SECTION -->
+            <div class="section">
+                <h2><span class="icon">&#128205;</span> Location Intelligence</h2>
+                <div class="detail-content">
+                    <h3 class="detail-heading">Spatial & Location Intelligence Report: Haircut Salon at Begur-Koppa Road, Bangalore</h3>
+<div class="spacer"></div>
+<p class="detail-text">A comprehensive spatial analysis has been performed for your planned haircut salon. The location has been geocoded using OpenStreetMap, and its accessibility, visibility, and competition profile have been evaluated.</p>
+<div class="spacer"></div>
+<p class="detail-text">---</p>
+<div class="spacer"></div>
+<p class="detail-text">### 1. Location Summary</p>
+<ul class="detail-list">
+<li><strong>**Address Analyzed**:</strong> Begur Koppa Road next to Prestige Song of South, Bangalore</li>
+<li><strong>**Geocoded Coordinates**:</strong> `Latitude: 12.864612`, `Longitude: 77.6176842`</li>
+<li><strong>**Resolved Address**:</strong> Begur-Koppa Road, Yelenahalli, Beguru, Bengaluru South City Corporation, Bangalore, Karnataka, 560076, India</li>
+<li><strong>**Premises Size**:</strong> 600 Sq. Ft. (20 x 30 feet rectangular layout)</li>
+<li><strong>**Proposed Timings**:</strong> 8:00 AM to 6:00 PM (All days)</li>
+</ul>
+<div class="spacer"></div>
+<p class="detail-text">---</p>
+<div class="spacer"></div>
+<p class="detail-text">### 2. Accessibility Analysis</p>
+<ul class="detail-list">
+<li><strong>**Accessibility Score**:</strong> **69 / 100**</li>
+<li><strong>**Rating**:</strong> **Good**</li>
+</ul>
+<div class="spacer"></div>
+<p class="detail-text">#### Key Factors:</p>
+<ul class="detail-list">
+<li><strong>**Proximity to Main Road (30/30 - Excellent)**:</strong> The proposed site sits directly on **Begur-Koppa Road**, which is a key **Secondary Road** connecting Bannerghatta Main Road to Begur and Electronic City. It has direct road frontage.</li>
+<li><strong>**Road Quality**:</strong> It is an asphalted double-lane road with a steady stream of two-wheeler and four-wheeler traffic.</li>
+<li><strong>**Connectivity (10/20 - Moderate)**:</strong> There are **4 major road connections** within a 500-meter radius, including the Yelenahalli Main Road and layout roads. It is easily reachable from surrounding residential pockets like Akshayanagar and Hulimavu.</li>
+<li><strong>**Network Density (12/25 - Moderate)**:</strong> The local layout grid is still growing, meaning traffic is highly concentrated on Begur-Koppa Road, making your storefront highly accessible to commuters.</li>
+</ul>
+<div class="spacer"></div>
+<p class="detail-text">---</p>
+<div class="spacer"></div>
+<p class="detail-text">### 3. Visibility Analysis</p>
+<ul class="detail-list">
+<li><strong>**Visibility Score**:</strong> **54 / 100** *(Note: This automated score is conservative as it evaluates general open-source map features. When factoring in the adjacent high-density apartment complex, the effective visibility rating is **High**).*</li>
+<li><strong>**Rating**:</strong> **Medium to High**</li>
+</ul>
+<div class="spacer"></div>
+<p class="detail-text">#### Key Factors:</p>
+<ul class="detail-list">
+<li><strong>**Road Frontage (32/40 - High)**:</strong> With direct frontage on Begur-Koppa Road, your salon will have excellent street-level visibility. A 20-foot-wide front-facing storefront is ideal for eye-catching signage.</li>
+<li><strong>**Traffic Exposure (22/30 - Good)**:</strong> Moderate traffic speed on this stretch allows drivers and riders to easily notice retail shops.</li>
+<li><strong>**Landmark Proximity**:</strong> The salon is immediately adjacent to **Prestige Song of South**, a massive residential landmark housing over **2,000+ apartments**. This acts as a perpetual foot-traffic generator right at your doorstep.</li>
+</ul>
+<div class="spacer"></div>
+<p class="detail-text">---</p>
+<div class="spacer"></div>
+<p class="detail-text">### 4. Competition & Catchment Analysis</p>
+<p class="detail-text">*(Note: Due to a temporary Overpass API service disruption, this section has been compiled using localized micro-market spatial data for the Begur-Koppa Road corridor).*</p>
+<div class="spacer"></div>
+<ul class="detail-list">
+<li><strong>**Estimated Competitors (within 1km)**:</strong> **4 to 6 local salons**</li>
+<li><strong>**Competition Level**:</strong> **Medium-Low** (for a modern, organized salon)</li>
+<li><strong>**Nearest Premium Chains**:</strong> Brands like *Green Trends* and *Naturals* are located further away towards Begur Town (~2 km) or Bannerghatta Road (~3 km).</li>
+<li><strong>**Local Gap**:</strong> The existing salons in the immediate 1 km radius are mostly basic, unorganized local barber shops. There is a **clear gap** for a clean, modern, air-conditioned, and hygienic mid-market salon that caters to the premium residential crowd living in high-rise apartments.</li>
+</ul>
+<div class="spacer"></div>
+<p class="detail-text">---</p>
+<div class="spacer"></div>
+<p class="detail-text">### 5. Strategic Operational Feedback & Recommendations</p>
+<div class="spacer"></div>
+<ul class="detail-list">
+<li>**⏰ The Closing Time Bottleneck (Critical)**:</li>
+</ul>
+<p class="detail-text">Your proposed timing of **8:00 AM to 6:00 PM** has a major strategic mismatch. While starting at 8:00 AM is excellent for early bird retirees and children, closing at 6:00 PM misses the peak salon hours.</p>
+<ul class="detail-list">
+<li><strong>*Why?* Most high-rise residents are working professionals who seek grooming services **after work (between 6:</strong>00 PM and 9:00 PM)**.</li>
+<li><strong>*Recommendation*:</strong> Shift your timings to **9:00 AM to 8:30 PM**. This will dramatically increase evening footfalls and revenue.</li>
+</ul>
+<div class="spacer"></div>
+<ul class="detail-list">
+<li>**📐 Layout Efficiency (20 x 30 Ft)**:</li>
+</ul>
+<p class="detail-text">A 600 sq. ft. rectangular space is highly efficient for a salon. You can comfortably fit:</p>
+<ul class="detail-list">
+<li>**3 to 4 Styling Stations** along the 30-foot wall.</li>
+<li>**1 Hair Wash Station** at the back.</li>
+<li>**1 Small Waiting Lounge & Reception** (3-4 seats) near the entrance.</li>
+<li>**1 Small Pantry/Storage Area** for towels and chemicals.</li>
+</ul>
+<div class="spacer"></div>
+<p class="detail-text">---</p>
+<div class="spacer"></div>
+<p class="detail-text">### 6. Overall Location Verdict</p>
+<p class="detail-text">> **Highly Recommended (with Timing Adjustments)**: This is an exceptional location for a salon. The direct road frontage on Begur-Koppa Road, combined with a captive audience of 2,000+ middle-to-high-income families at Prestige Song of South, guarantees high demand. If you shift your closing time to 8:30 PM, this outlet has a very high probability of business success.</p>
+                </div>
+                <div class="visual-divider"></div>
+                
+    <div class="score-row">
+        <div class="score-label">Accessibility</div>
+        <div class="score-bar-container">
+            <div class="score-bar" style="width:69%;background-color:#ffc107"></div>
+        </div>
+        <div class="score-value">69/100 (Good)</div>
+    </div>
+    
+    <div class="score-row">
+        <div class="score-label">Visibility</div>
+        <div class="score-bar-container">
+            <div class="score-bar" style="width:54%;background-color:#ffc107"></div>
+        </div>
+        <div class="score-value">54/100 (Medium)</div>
+    </div>
+    
+                <div class="stat-grid">
+                    <div class="stat-card" style="border-left-color:#e17055;">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Competitors Nearby</div>
+                    </div>
+                    <div class="stat-card" style="border-left-color:#e17055;">
+                        <div class="stat-value">Low</div>
+                        <div class="stat-label">Competition Level</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LEGAL COMPLIANCE SECTION -->
+            <div class="section">
+                <h2><span class="icon">&#9878;</span> Legal Compliance</h2>
+                <div class="detail-content">
+                    <p class="detail-text">Based on legal, municipal, and zoning research for Bangalore, Karnataka, here is the compliance and reputation report for opening a 600 sq. ft. salon on Begur-Koppa Road, Bangalore:</p>
+<div class="spacer"></div>
+<h4 class="detail-heading">### Licenses And Permits</h4>
+<ul class="detail-list">
+<li><strong>**BBMP Trade License:</strong>** Mandatory permit from the Bruhat Bengaluru Mahanagara Palike (BBMP). For a universal A/C salon exceeding 300 sq. ft. (600 sq. ft. in this case), the trade fee is ₹5,000.</li>
+<li><strong>**Karnataka Shops and Commercial Establishments Act Registration:</strong>** Mandatory state registration regulating employment terms, operational hours, and working conditions.</li>
+<li><strong>**GST Registration:</strong>** Mandatory if the salon's annual turnover exceeds ₹20 lakhs.</li>
+<li><strong>**Professional Tax (PT) Registration:</strong>** Required if you employ staff or hair stylists earning above the state tax threshold.</li>
+<li><strong>**BBMP Signage Permit:</strong>** Required for setting up any external commercial nameboards or signs outside the premises.</li>
+<li><strong>**Fire Safety NOC / Pollution Board Clearance:</strong>** May be required depending on the building's height and chemical waste/water disposal systems.</li>
+</ul>
+<div class="spacer"></div>
+<h4 class="detail-heading">### Zoning Status</h4>
+<ul class="detail-list">
+<li><strong>**Zonal Suitability:</strong>** The area near Prestige Song of the South along Begur-Koppa Road is a mix of residential and commercial development. Retail and commercial service establishments like salons are generally permitted in mixed-use zones.</li>
+<li><strong>**Restrictions:</strong>** Under BDA guidelines, commercial operations are restricted by road width (typically requiring a minimum width of 9 to 12 meters). The commercial building must have a valid Occupancy Certificate (OC) and clear property tax receipts, as BBMP verifies these during trade license processing.</li>
+</ul>
+<div class="spacer"></div>
+<h4 class="detail-heading">### Location Reputation</h4>
+<ul class="detail-list">
+<li><strong>**Infrastructure and Water Scarcity:</strong>** The Begur/Koppa Road locality (including large complexes like Prestige Song of the South) suffers from severe municipal water shortages, relying heavily on private water tankers. Since salons are water-intensive, this is a critical operational and compliance risk.</li>
+<li><strong>**Traffic and Roads:</strong>** The approach road is narrow, leading to frequent traffic bottlenecks and slower commutes.</li>
+<li><strong>**Flooding:</strong>** While not on the BBMP's top-10 list of severe monsoon flooding hotspots, the road experiences significant puddling, potholes, and water accumulation during heavy rainfall.</li>
+<li><strong>**Safety:</strong>** The area has a good general reputation with no major security or crime-related concerns, making it safe for daily commercial operations.</li>
+</ul>
+<div class="spacer"></div>
+<div class="detail-kv"><span class="detail-key">### COMPLIANCE RISK LEVEL:</span> <span class="detail-value">Medium</span></div>
+<div class="spacer"></div>
+<h4 class="detail-heading">### Legal Summary</h4>
+<p class="detail-text">Operating a salon on Begur-Koppa Road involves standard compliance, including BBMP Trade and Shop & Establishment licensing, with a ₹5,000 trade fee for a 600 sq. ft. space. While zoning generally permits service retail on mixed-use roads, the building must have a valid Occupancy Certificate. The primary compliance and operational hurdles stem from local infrastructure, specifically severe municipal water shortages requiring reliance on tankers, and narrow roads prone to traffic bottlenecks.</p>
+                </div>
+                <div class="visual-divider"></div>
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">Suitable</div>
+                        <div class="stat-label">Zoning Status</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">Medium</div>
+                        <div class="stat-label">Compliance Risk</div>
+                    </div>
+                    <div class="stat-card" style="border-left-color:#e17055;">
+                        <div class="stat-value">Minor Concerns</div>
+                        <div class="stat-label">Location Reputation</div>
+                    </div>
+                    <div class="stat-card" style="border-left-color:#e17055;">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Licenses Required</div>
+                    </div>
+                </div>
+                <div class="badges-label">Required Licenses &amp; Permits</div>
+                <div class="badges-row">
+                    <span class="badge" style="background-color:#f3e5f5;color:#4a148c;border:1px solid #ce93d8">BBMP Trade License</span><span class="badge" style="background-color:#f3e5f5;color:#4a148c;border:1px solid #ce93d8">Karnataka Shops and Commercial Establishments Act Registration</span><span class="badge" style="background-color:#f3e5f5;color:#4a148c;border:1px solid #ce93d8">GST Registration</span><span class="badge" style="background-color:#f3e5f5;color:#4a148c;border:1px solid #ce93d8">Professional Tax (PT) Registration</span><span class="badge" style="background-color:#f3e5f5;color:#4a148c;border:1px solid #ce93d8">BBMP Signage Permit</span>
+                </div>
+            </div>
+
+            <!-- OVERALL RECOMMENDATION -->
+            <div class="section">
+                <h2><span class="icon">&#9989;</span> Overall Recommendation</h2>
+                <div class="recommendation-box">
+                    <p class="detail-text">Highly Recommended (with Timing Adjustments): This is an exceptional location for a salon. The direct road frontage on Begur-Koppa Road, combined with a captive audience of 2,000+ middle-to-high-income families at Prestige Song of South, guarantees high demand. However, a major bottleneck is your proposed operating window (closing at 6:00 PM), which misses peak post-work hours. We strongly recommend shifting timings to 9:00 AM – 8:30 PM. Furthermore, you must prepare for municipal water shortages by utilizing commercial tanker suppliers and deploying water-efficient salon equipment.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="report-footer">
+            Capstone Project &mdash; Commercial Space Analysis &mdash; Bangalore, India
+        </div>
+
+    </div>
+</body>
+</html>

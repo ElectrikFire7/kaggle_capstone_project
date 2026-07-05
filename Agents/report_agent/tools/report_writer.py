@@ -1,127 +1,119 @@
 """
 File: Agents/report_agent/tools/report_writer.py
-Purpose: Generates a styled HTML report file combining electricity cost estimates,
-         GIS location intelligence, and legal compliance findings for a commercial
-         space in Bangalore. Writes the report to the output/ directory with colored
-         tags for key metrics.
+Purpose: Generates a styled HTML report file combining full detailed outputs from all
+         sub-agents (Electricity, Water, GIS, Legal) with visual summary elements
+         (colored badges, score bars, stat cards, cost highlighters).
+         Writes the report to the output/ directory.
 """
 
 import os
+import re
 import pathlib
 from datetime import datetime
 
 
 def write_report(
+    electricity_details: str,
+    gis_details: str,
+    legal_details: str,
+    water_details: str,
     business_type: str,
     area_sqft: float,
     address: str,
-    electricity_summary: str,
     electricity_cost_range: str,
     electricity_usage_level: str,
-    major_consumers: str,
+    electricity_appliances: str,
     accessibility_score: int,
     accessibility_rating: str,
     visibility_score: int,
     visibility_rating: str,
     competition_level: str,
     competitors_count: int,
-    gis_summary: str,
-    legal_summary: str,
     required_licenses: str,
     zoning_status: str,
     compliance_risk_level: str,
     reputation_status: str,
-    water_summary: str,
     water_cost_range: str,
     water_usage_level: str,
     water_consumption_kl: float,
-    major_water_consumers: str,
+    water_consumers: str,
     overall_recommendation: str,
 ) -> dict:
     """
     Generates a styled HTML report and writes it to the output/ directory.
 
     Args:
+        electricity_details: Full text output from the Electricity Summarizer Agent.
+        gis_details: Full text output from the GIS Agent.
+        legal_details: Full text output from the Legal Compliance Agent.
+        water_details: Full text output from the Water Resource Agent.
         business_type: Type of business (e.g., "restaurant", "bakery").
         area_sqft: Area of the commercial space in square feet.
         address: The address or locality analyzed.
-        electricity_summary: Concise paragraph summarizing electricity cost findings.
-        electricity_cost_range: Monthly cost range string (e.g., "12,500 - 22,000").
+        electricity_cost_range: Monthly electricity cost range string.
         electricity_usage_level: One of "Low", "Medium", or "High".
-        major_consumers: Comma-separated list of top electricity consumers.
+        electricity_appliances: Comma-separated list of top electricity consumers.
         accessibility_score: Accessibility score out of 100.
         accessibility_rating: One of "Excellent", "Good", "Fair", or "Poor".
         visibility_score: Visibility score out of 100.
         visibility_rating: One of "High", "Medium", or "Low".
         competition_level: One of "High", "Medium", "Low", or "Not Analyzed".
-        competitors_count: Number of competitors found.
-        gis_summary: Concise paragraph summarizing location intelligence findings.
-        legal_summary: Concise paragraph summarizing legal compliance and reputation findings.
+        competitors_count: Number of competitors found nearby.
         required_licenses: Comma-separated list of required licenses/permits.
         zoning_status: One of "Suitable", "Restricted", or "Unknown".
         compliance_risk_level: One of "Low", "Medium", or "High".
         reputation_status: One of "Clean", "Minor Concerns", or "Major Concerns".
-        water_summary: Concise paragraph summarizing water consumption and cost findings.
-        water_cost_range: Monthly water cost range string (e.g., "3,500 - 5,200").
+        water_cost_range: Monthly water cost range string.
         water_usage_level: One of "Low", "Medium", or "High".
         water_consumption_kl: Monthly water consumption in kiloliters.
-        major_water_consumers: Comma-separated list of top water consumers.
-        overall_recommendation: Brief overall assessment combining all perspectives.
+        water_consumers: Comma-separated list of top water consumers.
+        overall_recommendation: Full overall recommendation text.
 
     Returns:
-        A dictionary containing:
-            - status: "success" or "error"
-            - file_path: Absolute path to the generated HTML file
-            - message: Confirmation message
+        A dictionary with status, file_path, and message.
     """
-    # Resolve output directory relative to project root
     project_root = pathlib.Path(__file__).parent.parent.parent.parent
     output_dir = project_root / "output"
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # Generate timestamped filename
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = f"report_{timestamp}.html"
     file_path = output_dir / filename
 
-    # Build tag color mappings
     tag_colors = _get_tag_colors()
 
-    # Build the HTML content
     html_content = _build_html(
+        electricity_details=electricity_details,
+        gis_details=gis_details,
+        legal_details=legal_details,
+        water_details=water_details,
         business_type=business_type,
         area_sqft=area_sqft,
         address=address,
-        electricity_summary=electricity_summary,
         electricity_cost_range=electricity_cost_range,
         electricity_usage_level=electricity_usage_level,
-        major_consumers=major_consumers,
+        electricity_appliances=electricity_appliances,
         accessibility_score=accessibility_score,
         accessibility_rating=accessibility_rating,
         visibility_score=visibility_score,
         visibility_rating=visibility_rating,
         competition_level=competition_level,
         competitors_count=competitors_count,
-        gis_summary=gis_summary,
-        legal_summary=legal_summary,
         required_licenses=required_licenses,
         zoning_status=zoning_status,
         compliance_risk_level=compliance_risk_level,
         reputation_status=reputation_status,
-        water_summary=water_summary,
         water_cost_range=water_cost_range,
         water_usage_level=water_usage_level,
         water_consumption_kl=water_consumption_kl,
-        major_water_consumers=major_water_consumers,
+        water_consumers=water_consumers,
         overall_recommendation=overall_recommendation,
         tag_colors=tag_colors,
-        timestamp=timestamp,
     )
 
     try:
         with open(file_path, "w", encoding="utf-8") as f:
             f.write(html_content)
-
         return {
             "status": "success",
             "file_path": str(file_path.resolve()),
@@ -138,36 +130,40 @@ def write_report(
 def _get_tag_colors() -> dict:
     """Returns color mappings for different rating/level values."""
     return {
-        # Shared levels
         "Low": {"bg": "#d4edda", "text": "#155724", "border": "#c3e6cb"},
         "Medium": {"bg": "#fff3cd", "text": "#856404", "border": "#ffeeba"},
         "High": {"bg": "#f8d7da", "text": "#721c24", "border": "#f5c6cb"},
-        # Accessibility rating
         "Excellent": {"bg": "#d4edda", "text": "#155724", "border": "#c3e6cb"},
         "Good": {"bg": "#d1ecf1", "text": "#0c5460", "border": "#bee5eb"},
         "Fair": {"bg": "#fff3cd", "text": "#856404", "border": "#ffeeba"},
         "Poor": {"bg": "#f8d7da", "text": "#721c24", "border": "#f5c6cb"},
-        # Zoning status
         "Suitable": {"bg": "#d4edda", "text": "#155724", "border": "#c3e6cb"},
         "Restricted": {"bg": "#f8d7da", "text": "#721c24", "border": "#f5c6cb"},
         "Unknown": {"bg": "#e2e3e5", "text": "#383d41", "border": "#d6d8db"},
-        # Reputation status
         "Clean": {"bg": "#d4edda", "text": "#155724", "border": "#c3e6cb"},
         "Minor Concerns": {"bg": "#fff3cd", "text": "#856404", "border": "#ffeeba"},
         "Major Concerns": {"bg": "#f8d7da", "text": "#721c24", "border": "#f5c6cb"},
-        # Fallbacks
         "Not Analyzed": {"bg": "#e2e3e5", "text": "#383d41", "border": "#d6d8db"},
         "Not Available": {"bg": "#e2e3e5", "text": "#383d41", "border": "#d6d8db"},
     }
 
 
 def _get_tag_html(label: str, value: str, tag_colors: dict) -> str:
-    """Generates an HTML tag span with appropriate color styling."""
+    """Generates an HTML badge span with appropriate color styling."""
     colors = tag_colors.get(value, {"bg": "#e2e3e5", "text": "#383d41", "border": "#d6d8db"})
     return (
         f'<span class="tag" style="background-color:{colors["bg"]};'
         f'color:{colors["text"]};border:1px solid {colors["border"]}">'
         f"{label}: {value}</span>"
+    )
+
+
+def _get_badge_html(text: str, color_bg: str, color_text: str, color_border: str) -> str:
+    """Generates a simple badge for appliances/consumers/licenses."""
+    return (
+        f'<span class="badge" style="background-color:{color_bg};'
+        f'color:{color_text};border:1px solid {color_border}">'
+        f"{text}</span>"
     )
 
 
@@ -193,62 +189,176 @@ def _get_score_bar_html(label: str, score: int, rating: str) -> str:
     """
 
 
+def _text_to_html(text: str) -> str:
+    """
+    Converts raw agent text output to styled HTML, preserving structure.
+    Handles headings, bullet points, numbered lists, and paragraphs.
+    """
+    if not text:
+        return "<p>No data available.</p>"
+
+    lines = text.strip().split("\n")
+    html_parts = []
+    in_list = False
+    list_type = None  # "ul" or "ol"
+
+    for line in lines:
+        stripped = line.strip()
+
+        # Skip empty lines — close any open list and add spacing
+        if not stripped:
+            if in_list:
+                html_parts.append(f"</{list_type}>")
+                in_list = False
+                list_type = None
+            html_parts.append('<div class="spacer"></div>')
+            continue
+
+        # Detect headings: lines ending with colon or lines that are ALL CAPS
+        # or lines matching patterns like "1. Section Name" or "## Heading"
+        is_heading = False
+
+        # Markdown-style headings
+        if stripped.startswith("## "):
+            if in_list:
+                html_parts.append(f"</{list_type}>")
+                in_list = False
+                list_type = None
+            html_parts.append(f'<h4 class="detail-heading">{stripped[3:]}</h4>')
+            is_heading = True
+        elif stripped.startswith("# "):
+            if in_list:
+                html_parts.append(f"</{list_type}>")
+                in_list = False
+                list_type = None
+            html_parts.append(f'<h3 class="detail-heading">{stripped[2:]}</h3>')
+            is_heading = True
+        # Section headings: ALL CAPS lines or lines ending with colon (but not short key:value pairs)
+        elif stripped.isupper() and len(stripped) > 3 and ":" not in stripped:
+            if in_list:
+                html_parts.append(f"</{list_type}>")
+                in_list = False
+                list_type = None
+            html_parts.append(f'<h4 class="detail-heading">{stripped.title()}</h4>')
+            is_heading = True
+        # Numbered section headings like "1. Accessibility Analysis" or "2. Visibility Analysis"
+        elif re.match(r"^\d+\.\s+[A-Z]", stripped) and len(stripped) > 5 and not re.match(r"^\d+\.\s+\S+\s*$", stripped):
+            if in_list:
+                html_parts.append(f"</{list_type}>")
+                in_list = False
+                list_type = None
+            html_parts.append(f'<h4 class="detail-heading">{stripped}</h4>')
+            is_heading = True
+        # Key: Value headings (like "BWSSB TARIFF CATEGORY: Non Domestic")
+        elif ":" in stripped and stripped.split(":")[0].isupper() and len(stripped.split(":")[0]) > 3:
+            if in_list:
+                html_parts.append(f"</{list_type}>")
+                in_list = False
+                list_type = None
+            key, _, value = stripped.partition(":")
+            html_parts.append(
+                f'<div class="detail-kv">'
+                f'<span class="detail-key">{key.strip()}:</span> '
+                f'<span class="detail-value">{value.strip()}</span>'
+                f'</div>'
+            )
+            is_heading = True
+
+        if is_heading:
+            continue
+
+        # Bullet points
+        if stripped.startswith("- ") or stripped.startswith("* "):
+            if not in_list or list_type != "ul":
+                if in_list:
+                    html_parts.append(f"</{list_type}>")
+                html_parts.append('<ul class="detail-list">')
+                in_list = True
+                list_type = "ul"
+            content = stripped[2:].strip()
+            # Check for bold key: value within bullet
+            if ":" in content:
+                key, _, value = content.partition(":")
+                if key and value:
+                    html_parts.append(f"<li><strong>{key.strip()}:</strong>{value}</li>")
+                else:
+                    html_parts.append(f"<li>{content}</li>")
+            else:
+                html_parts.append(f"<li>{content}</li>")
+            continue
+
+        # Numbered list items (but not section headings — those were caught above)
+        if re.match(r"^\d+[\.\)]\s", stripped):
+            if not in_list or list_type != "ol":
+                if in_list:
+                    html_parts.append(f"</{list_type}>")
+                html_parts.append('<ol class="detail-list">')
+                in_list = True
+                list_type = "ol"
+            content = re.sub(r"^\d+[\.\)]\s*", "", stripped)
+            html_parts.append(f"<li>{content}</li>")
+            continue
+
+        # Regular paragraph
+        if in_list:
+            html_parts.append(f"</{list_type}>")
+            in_list = False
+            list_type = None
+        html_parts.append(f'<p class="detail-text">{stripped}</p>')
+
+    # Close any remaining open list
+    if in_list:
+        html_parts.append(f"</{list_type}>")
+
+    return "\n".join(html_parts)
+
+
+def _build_badges(items_csv: str, color_bg: str, color_text: str, color_border: str) -> str:
+    """Builds a row of badges from a comma-separated string."""
+    badges = ""
+    for item in items_csv.split(","):
+        item = item.strip()
+        if item:
+            badges += _get_badge_html(item, color_bg, color_text, color_border)
+    return badges
+
+
 def _build_html(
+    electricity_details: str,
+    gis_details: str,
+    legal_details: str,
+    water_details: str,
     business_type: str,
     area_sqft: float,
     address: str,
-    electricity_summary: str,
     electricity_cost_range: str,
     electricity_usage_level: str,
-    major_consumers: str,
+    electricity_appliances: str,
     accessibility_score: int,
     accessibility_rating: str,
     visibility_score: int,
     visibility_rating: str,
     competition_level: str,
     competitors_count: int,
-    gis_summary: str,
-    legal_summary: str,
     required_licenses: str,
     zoning_status: str,
     compliance_risk_level: str,
     reputation_status: str,
-    water_summary: str,
     water_cost_range: str,
     water_usage_level: str,
     water_consumption_kl: float,
-    major_water_consumers: str,
+    water_consumers: str,
     overall_recommendation: str,
     tag_colors: dict,
-    timestamp: str,
 ) -> str:
     """Builds the complete HTML report string."""
 
-    # Build consumer list items
-    consumers_list = ""
-    for consumer in major_consumers.split(","):
-        consumer = consumer.strip()
-        if consumer:
-            consumers_list += f"<li>{consumer}</li>\n"
+    display_date = datetime.now().strftime("%d %B %Y, %I:%M %p")
 
-    # Build license list items
-    licenses_list = ""
-    for license_item in required_licenses.split(","):
-        license_item = license_item.strip()
-        if license_item:
-            licenses_list += f"<li>{license_item}</li>\n"
-
-    # Build water consumer list items
-    water_consumers_list = ""
-    for water_consumer in major_water_consumers.split(","):
-        water_consumer = water_consumer.strip()
-        if water_consumer:
-            water_consumers_list += f"<li>{water_consumer}</li>\n"
-
-    # Build tags section
+    # Tags bar
     tags_html = (
-        _get_tag_html("Electricity Usage", electricity_usage_level, tag_colors)
-        + _get_tag_html("Water Usage", water_usage_level, tag_colors)
+        _get_tag_html("Electricity", electricity_usage_level, tag_colors)
+        + _get_tag_html("Water", water_usage_level, tag_colors)
         + _get_tag_html("Accessibility", accessibility_rating, tag_colors)
         + _get_tag_html("Visibility", visibility_rating, tag_colors)
         + _get_tag_html("Competition", competition_level, tag_colors)
@@ -257,14 +367,32 @@ def _build_html(
         + _get_tag_html("Reputation", reputation_status, tag_colors)
     )
 
-    # Build score bars
+    # Convert full text to HTML
+    electricity_html = _text_to_html(electricity_details)
+    water_html = _text_to_html(water_details)
+    gis_html = _text_to_html(gis_details)
+    legal_html = _text_to_html(legal_details)
+    recommendation_html = _text_to_html(overall_recommendation)
+
+    # Build badges
+    appliance_badges = _build_badges(
+        electricity_appliances, "#fff3e0", "#e65100", "#ffcc80"
+    )
+    water_consumer_badges = _build_badges(
+        water_consumers, "#e3f2fd", "#0d47a1", "#90caf9"
+    )
+    license_badges = _build_badges(
+        required_licenses, "#f3e5f5", "#4a148c", "#ce93d8"
+    )
+
+    # Score bars
     score_bars_html = (
         _get_score_bar_html("Accessibility", accessibility_score, accessibility_rating)
         + _get_score_bar_html("Visibility", visibility_score, visibility_rating)
     )
 
-    # Format display date
-    display_date = datetime.now().strftime("%d %B %Y, %I:%M %p")
+    # License count
+    license_count = len([l for l in required_licenses.split(",") if l.strip()])
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -283,15 +411,16 @@ def _build_html(
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
             background-color: #f5f6fa;
             color: #2d3436;
-            line-height: 1.6;
+            line-height: 1.7;
             padding: 24px;
         }}
 
         .report-container {{
-            max-width: 860px;
+            max-width: 900px;
             margin: 0 auto;
         }}
 
+        /* ---- Header ---- */
         .report-header {{
             background: linear-gradient(135deg, #2c3e50, #3498db);
             color: #ffffff;
@@ -333,6 +462,7 @@ def _build_html(
             opacity: 0.8;
         }}
 
+        /* ---- Tags Bar ---- */
         .tags-section {{
             background: #ffffff;
             padding: 20px 32px;
@@ -361,6 +491,7 @@ def _build_html(
             font-weight: 600;
         }}
 
+        /* ---- Report Body ---- */
         .report-body {{
             background: #ffffff;
             border-left: 1px solid #e0e0e0;
@@ -377,31 +508,78 @@ def _build_html(
         }}
 
         .section h2 {{
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
             color: #2c3e50;
-            margin-bottom: 14px;
+            margin-bottom: 18px;
             display: flex;
             align-items: center;
             gap: 8px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
         }}
 
         .section h2 .icon {{
-            font-size: 20px;
+            font-size: 22px;
         }}
 
-        .section p {{
-            font-size: 15px;
+        /* ---- Detail Content Styles ---- */
+        .detail-content {{
+            margin-bottom: 20px;
+        }}
+
+        .detail-heading {{
+            font-size: 16px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 18px 0 8px 0;
+        }}
+
+        .detail-text {{
+            font-size: 14px;
             color: #4a4a4a;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
+            line-height: 1.7;
         }}
 
+        .detail-kv {{
+            font-size: 14px;
+            margin-bottom: 6px;
+            padding: 6px 0;
+        }}
+
+        .detail-key {{
+            font-weight: 700;
+            color: #2c3e50;
+        }}
+
+        .detail-value {{
+            color: #4a4a4a;
+        }}
+
+        .detail-list {{
+            padding-left: 20px;
+            margin: 8px 0;
+        }}
+
+        .detail-list li {{
+            font-size: 14px;
+            color: #4a4a4a;
+            margin-bottom: 4px;
+            line-height: 1.6;
+        }}
+
+        .spacer {{
+            height: 8px;
+        }}
+
+        /* ---- Visual Elements ---- */
         .cost-highlight {{
             background: #f8f9fa;
             border-left: 4px solid #3498db;
             padding: 16px 20px;
             border-radius: 0 8px 8px 0;
-            margin: 16px 0;
+            margin: 20px 0;
         }}
 
         .cost-highlight .cost-value {{
@@ -415,21 +593,26 @@ def _build_html(
             color: #636e72;
         }}
 
-        .consumers-list {{
-            list-style: none;
-            padding: 0;
+        .badges-row {{
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-top: 8px;
+            margin: 12px 0;
         }}
 
-        .consumers-list li {{
-            background: #edf2f7;
-            padding: 6px 14px;
+        .badges-label {{
+            font-size: 13px;
+            color: #636e72;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }}
+
+        .badge {{
+            display: inline-block;
+            padding: 5px 14px;
             border-radius: 6px;
             font-size: 13px;
-            color: #4a5568;
+            font-weight: 600;
         }}
 
         .score-row {{
@@ -463,100 +646,59 @@ def _build_html(
         .score-value {{
             font-size: 13px;
             color: #636e72;
-            min-width: 120px;
+            min-width: 130px;
             text-align: right;
         }}
 
-        .competition-box {{
-            display: flex;
-            gap: 20px;
-            margin-top: 12px;
-            flex-wrap: wrap;
+        .stat-grid {{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 16px 0;
         }}
 
-        .competition-stat {{
+        .stat-card {{
             background: #f8f9fa;
-            padding: 14px 20px;
+            padding: 16px;
             border-radius: 8px;
             text-align: center;
-            min-width: 140px;
+            border-left: 4px solid #6c5ce7;
         }}
 
-        .competition-stat .stat-value {{
+        .stat-card .stat-value {{
             font-size: 24px;
             font-weight: 700;
             color: #2c3e50;
         }}
 
-        .competition-stat .stat-label {{
+        .stat-card .stat-label {{
             font-size: 12px;
             color: #636e72;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-        }}
-
-        .legal-grid {{
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-top: 16px;
-        }}
-
-        .legal-card {{
-            background: #f8f9fa;
-            padding: 16px;
-            border-radius: 8px;
-            border-left: 4px solid #6c5ce7;
-        }}
-
-        .legal-card .card-title {{
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #636e72;
-            margin-bottom: 6px;
-        }}
-
-        .legal-card .card-value {{
-            font-size: 16px;
-            font-weight: 700;
-            color: #2c3e50;
-        }}
-
-        .licenses-list {{
-            list-style: none;
-            padding: 0;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 12px;
-        }}
-
-        .licenses-list li {{
-            background: #f0e6ff;
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-size: 13px;
-            color: #5b21b6;
-            border: 1px solid #ddd6fe;
         }}
 
         .recommendation-box {{
             background: linear-gradient(135deg, #f8f9fa, #e9ecef);
             border: 1px solid #dee2e6;
-            padding: 20px 24px;
+            padding: 24px;
             border-radius: 8px;
             margin-top: 8px;
         }}
 
-        .recommendation-box p {{
-            font-size: 15px;
+        .recommendation-box .detail-text,
+        .recommendation-box .detail-heading,
+        .recommendation-box .detail-list li {{
             color: #2d3436;
-            font-weight: 500;
-            margin: 0;
         }}
 
+        /* ---- Divider ---- */
+        .visual-divider {{
+            border-top: 2px dashed #e9ecef;
+            margin: 20px 0;
+        }}
+
+        /* ---- Footer ---- */
         .report-footer {{
             background: #f8f9fa;
             padding: 16px 32px;
@@ -590,7 +732,7 @@ def _build_html(
             .score-value {{
                 text-align: left;
             }}
-            .legal-grid {{
+            .stat-grid {{
                 grid-template-columns: 1fr;
             }}
         }}
@@ -599,6 +741,7 @@ def _build_html(
 <body>
     <div class="report-container">
 
+        <!-- HEADER -->
         <div class="report-header">
             <h1>Commercial Space Analysis Report</h1>
             <p class="subtitle">Bangalore, India &mdash; Generated on {display_date}</p>
@@ -618,6 +761,7 @@ def _build_html(
             </div>
         </div>
 
+        <!-- TAGS BAR -->
         <div class="tags-section">
             <span class="tags-label">Key Findings</span>
             {tags_html}
@@ -625,98 +769,112 @@ def _build_html(
 
         <div class="report-body">
 
+            <!-- ELECTRICITY SECTION -->
             <div class="section">
                 <h2><span class="icon">&#9889;</span> Electricity Cost Estimate</h2>
-                <p>{electricity_summary}</p>
+                <div class="detail-content">
+                    {electricity_html}
+                </div>
+                <div class="visual-divider"></div>
                 <div class="cost-highlight">
-                    <div class="cost-label">Estimated Monthly Cost</div>
+                    <div class="cost-label">Estimated Monthly Electricity Cost</div>
                     <div class="cost-value">&#8377;{electricity_cost_range}</div>
                 </div>
-                <p style="font-size:13px;color:#636e72;margin-bottom:4px;">Top Electricity Consumers:</p>
-                <ul class="consumers-list">
-                    {consumers_list}
-                </ul>
+                <div class="badges-label">Top Electricity Consumers</div>
+                <div class="badges-row">
+                    {appliance_badges}
+                </div>
             </div>
 
+            <!-- WATER SECTION -->
             <div class="section">
                 <h2><span class="icon">&#128167;</span> Water Resource Estimate</h2>
-                <p>{water_summary}</p>
+                <div class="detail-content">
+                    {water_html}
+                </div>
+                <div class="visual-divider"></div>
                 <div class="cost-highlight" style="border-left-color:#0984e3;">
                     <div class="cost-label">Estimated Monthly Water Cost</div>
                     <div class="cost-value">&#8377;{water_cost_range}</div>
                 </div>
-                <div class="competition-box">
-                    <div class="competition-stat">
+                <div class="stat-grid">
+                    <div class="stat-card" style="border-left-color:#0984e3;">
                         <div class="stat-value">{water_consumption_kl}</div>
-                        <div class="stat-label">Monthly KL</div>
+                        <div class="stat-label">Monthly Kiloliters</div>
                     </div>
-                    <div class="competition-stat">
+                    <div class="stat-card" style="border-left-color:#0984e3;">
                         <div class="stat-value">{water_usage_level}</div>
                         <div class="stat-label">Usage Level</div>
                     </div>
                 </div>
-                <p style="font-size:13px;color:#636e72;margin-top:16px;margin-bottom:4px;">Top Water Consumers:</p>
-                <ul class="consumers-list">
-                    {water_consumers_list}
-                </ul>
+                <div class="badges-label">Top Water Consumers</div>
+                <div class="badges-row">
+                    {water_consumer_badges}
+                </div>
             </div>
 
+            <!-- LOCATION INTELLIGENCE SECTION -->
             <div class="section">
                 <h2><span class="icon">&#128205;</span> Location Intelligence</h2>
-                <p>{gis_summary}</p>
+                <div class="detail-content">
+                    {gis_html}
+                </div>
+                <div class="visual-divider"></div>
                 {score_bars_html}
-            </div>
-
-            <div class="section">
-                <h2><span class="icon">&#127970;</span> Competition Overview</h2>
-                <div class="competition-box">
-                    <div class="competition-stat">
+                <div class="stat-grid">
+                    <div class="stat-card" style="border-left-color:#e17055;">
                         <div class="stat-value">{competitors_count}</div>
                         <div class="stat-label">Competitors Nearby</div>
                     </div>
-                    <div class="competition-stat">
+                    <div class="stat-card" style="border-left-color:#e17055;">
                         <div class="stat-value">{competition_level}</div>
                         <div class="stat-label">Competition Level</div>
                     </div>
                 </div>
             </div>
 
+            <!-- LEGAL COMPLIANCE SECTION -->
             <div class="section">
                 <h2><span class="icon">&#9878;</span> Legal Compliance</h2>
-                <p>{legal_summary}</p>
-                <div class="legal-grid">
-                    <div class="legal-card">
-                        <div class="card-title">Zoning Status</div>
-                        <div class="card-value">{zoning_status}</div>
+                <div class="detail-content">
+                    {legal_html}
+                </div>
+                <div class="visual-divider"></div>
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">{zoning_status}</div>
+                        <div class="stat-label">Zoning Status</div>
                     </div>
-                    <div class="legal-card">
-                        <div class="card-title">Compliance Risk</div>
-                        <div class="card-value">{compliance_risk_level}</div>
+                    <div class="stat-card">
+                        <div class="stat-value">{compliance_risk_level}</div>
+                        <div class="stat-label">Compliance Risk</div>
                     </div>
-                    <div class="legal-card">
-                        <div class="card-title">Location Reputation</div>
-                        <div class="card-value">{reputation_status}</div>
+                    <div class="stat-card" style="border-left-color:#e17055;">
+                        <div class="stat-value">{reputation_status}</div>
+                        <div class="stat-label">Location Reputation</div>
                     </div>
-                    <div class="legal-card" style="border-left-color:#e17055;">
-                        <div class="card-title">Licenses Required</div>
-                        <div class="card-value">{len([l for l in required_licenses.split(',') if l.strip()])}</div>
+                    <div class="stat-card" style="border-left-color:#e17055;">
+                        <div class="stat-value">{license_count}</div>
+                        <div class="stat-label">Licenses Required</div>
                     </div>
                 </div>
-                <p style="font-size:13px;color:#636e72;margin-top:16px;margin-bottom:4px;">Required Licenses &amp; Permits:</p>
-                <ul class="licenses-list">
-                    {licenses_list}
-                </ul>
+                <div class="badges-label">Required Licenses &amp; Permits</div>
+                <div class="badges-row">
+                    {license_badges}
+                </div>
             </div>
 
+            <!-- OVERALL RECOMMENDATION -->
             <div class="section">
                 <h2><span class="icon">&#9989;</span> Overall Recommendation</h2>
                 <div class="recommendation-box">
-                    <p>{overall_recommendation}</p>
+                    {recommendation_html}
                 </div>
             </div>
 
         </div>
 
+        <!-- FOOTER -->
         <div class="report-footer">
             Capstone Project &mdash; Commercial Space Analysis &mdash; Bangalore, India
         </div>

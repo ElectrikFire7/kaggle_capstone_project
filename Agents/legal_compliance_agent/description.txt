@@ -1,0 +1,1 @@
+The Legal Compliance Agent uses Google Search to research legal requirements, zoning regulations, licensing needs, and location reputation for a specific business type at a given address in Bangalore. It identifies required permits, potential legal risks, and any negative reputation or safety concerns associated with the location.

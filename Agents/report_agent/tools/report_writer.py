@@ -1,8 +1,9 @@
 """
 File: Agents/report_agent/tools/report_writer.py
-Purpose: Generates a styled HTML report file combining electricity cost estimates and
-         GIS location intelligence findings for a commercial space in Bangalore.
-         Writes the report to the output/ directory with colored tags for key metrics.
+Purpose: Generates a styled HTML report file combining electricity cost estimates,
+         GIS location intelligence, and legal compliance findings for a commercial
+         space in Bangalore. Writes the report to the output/ directory with colored
+         tags for key metrics.
 """
 
 import os
@@ -25,6 +26,11 @@ def write_report(
     competition_level: str,
     competitors_count: int,
     gis_summary: str,
+    legal_summary: str,
+    required_licenses: str,
+    zoning_status: str,
+    compliance_risk_level: str,
+    reputation_status: str,
     overall_recommendation: str,
 ) -> dict:
     """
@@ -45,7 +51,12 @@ def write_report(
         competition_level: One of "High", "Medium", "Low", or "Not Analyzed".
         competitors_count: Number of competitors found.
         gis_summary: Concise paragraph summarizing location intelligence findings.
-        overall_recommendation: Brief overall assessment combining both perspectives.
+        legal_summary: Concise paragraph summarizing legal compliance and reputation findings.
+        required_licenses: Comma-separated list of required licenses/permits.
+        zoning_status: One of "Suitable", "Restricted", or "Unknown".
+        compliance_risk_level: One of "Low", "Medium", or "High".
+        reputation_status: One of "Clean", "Minor Concerns", or "Major Concerns".
+        overall_recommendation: Brief overall assessment combining all perspectives.
 
     Returns:
         A dictionary containing:
@@ -82,6 +93,11 @@ def write_report(
         competition_level=competition_level,
         competitors_count=competitors_count,
         gis_summary=gis_summary,
+        legal_summary=legal_summary,
+        required_licenses=required_licenses,
+        zoning_status=zoning_status,
+        compliance_risk_level=compliance_risk_level,
+        reputation_status=reputation_status,
         overall_recommendation=overall_recommendation,
         tag_colors=tag_colors,
         timestamp=timestamp,
@@ -107,7 +123,7 @@ def write_report(
 def _get_tag_colors() -> dict:
     """Returns color mappings for different rating/level values."""
     return {
-        # Electricity usage level
+        # Shared levels
         "Low": {"bg": "#d4edda", "text": "#155724", "border": "#c3e6cb"},
         "Medium": {"bg": "#fff3cd", "text": "#856404", "border": "#ffeeba"},
         "High": {"bg": "#f8d7da", "text": "#721c24", "border": "#f5c6cb"},
@@ -116,9 +132,15 @@ def _get_tag_colors() -> dict:
         "Good": {"bg": "#d1ecf1", "text": "#0c5460", "border": "#bee5eb"},
         "Fair": {"bg": "#fff3cd", "text": "#856404", "border": "#ffeeba"},
         "Poor": {"bg": "#f8d7da", "text": "#721c24", "border": "#f5c6cb"},
-        # Visibility rating (reuses some colors)
-        # "High", "Medium", "Low" already defined above
-        # Competition level (reuses some colors)
+        # Zoning status
+        "Suitable": {"bg": "#d4edda", "text": "#155724", "border": "#c3e6cb"},
+        "Restricted": {"bg": "#f8d7da", "text": "#721c24", "border": "#f5c6cb"},
+        "Unknown": {"bg": "#e2e3e5", "text": "#383d41", "border": "#d6d8db"},
+        # Reputation status
+        "Clean": {"bg": "#d4edda", "text": "#155724", "border": "#c3e6cb"},
+        "Minor Concerns": {"bg": "#fff3cd", "text": "#856404", "border": "#ffeeba"},
+        "Major Concerns": {"bg": "#f8d7da", "text": "#721c24", "border": "#f5c6cb"},
+        # Fallbacks
         "Not Analyzed": {"bg": "#e2e3e5", "text": "#383d41", "border": "#d6d8db"},
         "Not Available": {"bg": "#e2e3e5", "text": "#383d41", "border": "#d6d8db"},
     }
@@ -171,6 +193,11 @@ def _build_html(
     competition_level: str,
     competitors_count: int,
     gis_summary: str,
+    legal_summary: str,
+    required_licenses: str,
+    zoning_status: str,
+    compliance_risk_level: str,
+    reputation_status: str,
     overall_recommendation: str,
     tag_colors: dict,
     timestamp: str,
@@ -184,12 +211,22 @@ def _build_html(
         if consumer:
             consumers_list += f"<li>{consumer}</li>\n"
 
+    # Build license list items
+    licenses_list = ""
+    for license_item in required_licenses.split(","):
+        license_item = license_item.strip()
+        if license_item:
+            licenses_list += f"<li>{license_item}</li>\n"
+
     # Build tags section
     tags_html = (
         _get_tag_html("Electricity Usage", electricity_usage_level, tag_colors)
         + _get_tag_html("Accessibility", accessibility_rating, tag_colors)
         + _get_tag_html("Visibility", visibility_rating, tag_colors)
         + _get_tag_html("Competition", competition_level, tag_colors)
+        + _get_tag_html("Compliance Risk", compliance_risk_level, tag_colors)
+        + _get_tag_html("Zoning", zoning_status, tag_colors)
+        + _get_tag_html("Reputation", reputation_status, tag_colors)
     )
 
     # Build score bars
@@ -430,6 +467,53 @@ def _build_html(
             letter-spacing: 0.5px;
         }}
 
+        .legal-grid {{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 16px;
+        }}
+
+        .legal-card {{
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 8px;
+            border-left: 4px solid #6c5ce7;
+        }}
+
+        .legal-card .card-title {{
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #636e72;
+            margin-bottom: 6px;
+        }}
+
+        .legal-card .card-value {{
+            font-size: 16px;
+            font-weight: 700;
+            color: #2c3e50;
+        }}
+
+        .licenses-list {{
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }}
+
+        .licenses-list li {{
+            background: #f0e6ff;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #5b21b6;
+            border: 1px solid #ddd6fe;
+        }}
+
         .recommendation-box {{
             background: linear-gradient(135deg, #f8f9fa, #e9ecef);
             border: 1px solid #dee2e6;
@@ -477,6 +561,9 @@ def _build_html(
             }}
             .score-value {{
                 text-align: left;
+            }}
+            .legal-grid {{
+                grid-template-columns: 1fr;
             }}
         }}
     </style>
@@ -541,6 +628,33 @@ def _build_html(
                         <div class="stat-label">Competition Level</div>
                     </div>
                 </div>
+            </div>
+
+            <div class="section">
+                <h2><span class="icon">&#9878;</span> Legal Compliance</h2>
+                <p>{legal_summary}</p>
+                <div class="legal-grid">
+                    <div class="legal-card">
+                        <div class="card-title">Zoning Status</div>
+                        <div class="card-value">{zoning_status}</div>
+                    </div>
+                    <div class="legal-card">
+                        <div class="card-title">Compliance Risk</div>
+                        <div class="card-value">{compliance_risk_level}</div>
+                    </div>
+                    <div class="legal-card">
+                        <div class="card-title">Location Reputation</div>
+                        <div class="card-value">{reputation_status}</div>
+                    </div>
+                    <div class="legal-card" style="border-left-color:#e17055;">
+                        <div class="card-title">Licenses Required</div>
+                        <div class="card-value">{len([l for l in required_licenses.split(',') if l.strip()])}</div>
+                    </div>
+                </div>
+                <p style="font-size:13px;color:#636e72;margin-top:16px;margin-bottom:4px;">Required Licenses &amp; Permits:</p>
+                <ul class="licenses-list">
+                    {licenses_list}
+                </ul>
             </div>
 
             <div class="section">

@@ -71,42 +71,41 @@ adk web
 ## Agent Pipeline
 
 ```
-                          User Query
-                              |
-                              v
-                    +-------------------+
-                    |  Prompt Splitter  |
-                    |    (LlmAgent)     |
-                    +-------------------+
-                              |
-              Extracts business_type, area_sqft, address
-              Generates 4 tailored sub-prompts
-                              |
-                              v
-                 +------------------------+
-                 |  Parallel Research     |
-                 |    (ParallelAgent)     |
-                 +------------------------+
-                    |    |    |    |
-         +----------+    |    |    +----------+
-         |           |---+    |               |
-         v           v        v               v
-  +-----------+  +-----+  +----------+   +------------+
-  |Electricity|  | GIS |  |  Legal   |   |   Water    |
-  |Summarizer |  |Agent|  |Compliance|   |  Resource  |
-  | (LlmAgent)|  |     |  |  Agent   |   |  (LlmAgent)|
-  +-----------+  +-----+  +----------+   +------------+
-         |          |         |              |
-         +----------+---------+--------------+
-                              |
-                              v
-                    +-------------------+
-                    |   Report Agent    |
-                    |    (LlmAgent)     |
-                    +-------------------+
-                              |
-                              v
-                   output/report_<ts>.html
+                                                     User Query
+                                                          |
+                                                          v
+                                              +------------------------+
+                                              |    Prompt Splitter     |
+                                              |      (LlmAgent)       |
+                                              +------------------------+
+                                                          |
+                                      Extracts business_type, area_sqft, address
+                                          Generates 4 tailored sub-prompts
+                                                          |
+                                                          v
+                                              +------------------------+
+                                              |   Parallel Research    |
+                                              |    (ParallelAgent)     |
+                                              +------------------------+
+                                  /               |              |               \
+                                 /                |              |                \
+                                v                 v              v                 v
+              +--------------------+    +--------------+   +--------------+    +--------------------+
+              |    Electricity     |    |     GIS      |   |    Legal     |    |       Water        |
+              |    Summarizer      |    |    Agent     |   |  Compliance  |    |     Resource       |
+              |    (LlmAgent)      |    |  (LlmAgent)  |   |  (LlmAgent)  |    |    (LlmAgent)      |
+              +--------------------+    +--------------+   +--------------+    +--------------------+
+                        |                      |                  |                      |
+                        +----------------------+------------------+----------------------+
+                                                          |
+                                                          v
+                                              +------------------------+
+                                              |     Report Agent       |
+                                              |      (LlmAgent)       |
+                                              +------------------------+
+                                                          |
+                                                          v
+                                                output/report_<ts>.html
 ```
 
 **Orchestrator** (`SequentialAgent`) drives the full pipeline top to bottom.
